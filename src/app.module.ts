@@ -22,6 +22,7 @@ import { ProductsModule } from './products/products.module';
         username: configService.get<string>('DB_USER'),
         password: configService.get<string>('DB_PASSWORD'),
         database: configService.get<string>('DB_NAME'),
+        // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: configService.get<boolean>('SYNC_ENTITIES'),
       }),
