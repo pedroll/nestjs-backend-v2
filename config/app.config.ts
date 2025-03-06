@@ -1,10 +1,13 @@
 export const EnvConfig = () => ({
   port: parseInt(process.env.PORT || '3000', 10),
   globalPrefix: process.env.GLOBAL_PREFIX || 'api/v1',
-  mongo: {
+  postgres: {
+    dbHost: process.env.DB_HOST || 'localhost',
     dbUser: process.env.DB_User || 'Teslo',
-    uri: process.env.MONGO_URI || 'mongodb://localhost',
-    // port: parseInt(process.env.DB_PORT, 10) || 5432,
-    dbName: process.env.DB_NAME || 'nest-pokemon',
+    dbPassword: process.env.DB_PASSWORD || 'yoursecretpasword',
+    port: parseInt(process.env.DB_PORT || '5432', 10),
+    dbName: process.env.DB_NAME || 'TesloDb',
+    paginationLimit: parseInt(process.env.PAGINATION_LIMIT || '10', 10),
+    syncEntities: process.env.SYNC_ENTITIES === 'true', //
   },
 });
