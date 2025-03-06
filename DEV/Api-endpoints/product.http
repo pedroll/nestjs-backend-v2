@@ -17,10 +17,10 @@ POST {{ apiUrl }}/products
 Content-Type: application/json
 
 {
-  "name": "Ford2",
+  "name": "Pedro's product",
   "sizes": ["small", "medium", "large"],
   "gender": "man",
-  "slug": "ford2"
+  "slug": "pedro-s-product"
 }
 
 ### POST create products malformed payload

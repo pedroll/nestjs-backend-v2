@@ -32,7 +32,15 @@ export class ProductsService {
     this.paginationLimit = this.configService.get<number>('paginationLimit');
   }
 
-  async create(createProductDto: CreateProductDto) {
+  /**
+   * Creates a new product in the database.
+   *
+   * @param {CreateProductDto} createProductDto - The data transfer object containing the details of the product to be created.
+   * @returns {Promise<Product | void>} The newly created product.
+   * @throws {BadRequestException} If a product with the same name already exists.
+   * @throws {InternalServerErrorException} If an error occurs during the creation process.
+   */
+  async create(createProductDto: CreateProductDto): Promise<Product | void> {
     try {
       // Create a new Product instance
       const newProduct = this.productRepository.create(createProductDto);
