@@ -7,7 +7,7 @@ export const EnvConfig = () => ({
     dbPassword: process.env.DB_PASSWORD || 'yoursecretpasword',
     port: parseInt(process.env.DB_PORT || '5432', 10),
     dbName: process.env.DB_NAME || 'TesloDb',
-    paginationLimit: parseInt(process.env.PAGINATION_LIMIT || '10', 10),
+    paginationLimit: +process.env.PAGINATION_LIMIT! || 10,
     syncEntities: process.env.SYNC_ENTITIES === 'true', //
   },
 });

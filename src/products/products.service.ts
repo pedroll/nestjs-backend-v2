@@ -14,6 +14,7 @@ import {
   QueryFailedError,
   Repository,
 } from 'typeorm';
+import { isUUID } from 'class-validator';
 
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -21,7 +22,7 @@ import { Product } from './entities/product.entity';
 
 @Injectable()
 export class ProductsService {
-  private paginationLimit;
+  private paginationLimit: number | undefined;
   private readonly logger = new Logger(ProductsService.name);
 
   constructor(
@@ -54,20 +55,81 @@ export class ProductsService {
     }
   }
 
-  findAll() {
-    return `This action returns all products`;
+  /**
+   * Retrieves a paginated list of Product from the database.
+   *
+   * @returns A promise that resolves to an array of Product.*/
+  async findAll() {
+    // findAll(paginationDto: PaginationDto) {
+    // default values
+    // const defaultLimit = +process.env.DEFAULT_LIMIT || 10;
+    //const { limit = this.paginationLimit, offset = 0 } = paginationDto;
+    const limit = this.configService.get<number>('paginationLimit');
+    const offset = 0;
+    return await this.productRepository.find({
+      skip: offset,
+      take: limit,
+      order: {
+        name: 'ASC',
+      },
+      select: ['id', 'name', 'price', 'description'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  /**
+   * Retrieves a Product by its number, MongoDB ID, or name.
+   *
+   * @param term - The term to search for (number, MongoDB ID, or name).
+   * @returns A promise that resolves to the found Product.
+   * @throws NotFoundException if no Product is found.
+   */
+  async findOne(term: string) {
+    let product: Product | null = null;
+
+    // Check if term is a valid UUID
+    if (isUUID(term)) {
+      product = await this.productRepository.findOne({ where: { id: term } });
+    }
+    // Search by Product name
+    if (!product) {
+      product = await this.productRepository.findOne({
+        where: {
+          name: term.toLocaleLowerCase().trim(),
+          slug: term.toLocaleLowerCase().trim(),
+        },
+      });
+    }
+
+    // Throw an exception if no Product is found
+    if (!product) {
+      throw new NotFoundException(`Product '${term}' not found`);
+    }
+
+    return product;
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  /**
+   * Removes a Product from the database.
+   *
+   * @param id - The MongoDB ID of the Product to remove.
+   * @returns A promise that resolves when the Product is removed.
+   * @throws NotFoundException if no Product is found with the given ID.
+   */
+  async remove(id: string) {
+    // const product = await this.findOne(id);
+    // await product.deleteOne();
+    // return `This action removes a #${id} product`;
+
+    // const result = await this.productModel.findByIdAndDelete(id);
+
+    const result = await this.productRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Product with id '${id}' not found`);
+    }
   }
 
   /**

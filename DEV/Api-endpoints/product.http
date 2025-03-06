@@ -9,7 +9,7 @@ GET {{ apiUrl }}/products/1
 ### GET products by name
 GET {{ apiUrl }}/products/ford
 ### GET products by Mongo Id
-GET {{ apiUrl }}/products/{{testId}}
+GET {{ apiUrl }}/products/07636e95-5cc5-431c-a952-d6553617f6e2
 
 
 ### POST create products
@@ -19,8 +19,7 @@ Content-Type: application/json
 {
   "name": "Pedro's product",
   "sizes": ["small", "medium", "large"],
-  "gender": "man",
-  "slug": "pedro-s-product"
+  "gender": "man"
 }
 
 ### POST create products malformed payload
@@ -43,5 +42,5 @@ Content-Type: application/json
 }
 
 ### DELETE products
-DELETE {{ apiUrl }}/products/67c78d4e84e0f96ed5a27ac7
+DELETE {{ apiUrl }}/products/15b711fd-5438-486e-ba2f-a133494c1996
 
