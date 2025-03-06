@@ -9,7 +9,7 @@ GET {{ apiUrl }}/products/1
 ### GET products by name
 GET {{ apiUrl }}/products/ford
 ### GET products by Mongo Id
-GET {{ apiUrl }}/products/07636e95-5cc5-431c-a952-d6553617f6e2
+GET {{ apiUrl }}/products/Pedro
 
 
 ### POST create products

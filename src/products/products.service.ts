@@ -85,13 +85,22 @@ export class ProductsService {
 
     // Check if term is a valid UUID
     if (isUUID(term)) {
+      this.logger.log(`Product searching by ID: ${term}`);
       product = await this.productRepository.findOne({ where: { id: term } });
     }
-    // Search by Product name
-    if (!product) {
+    if (product === null) {
+      // Search by Product name
+      this.logger.log(`Product searching by name : ${term}`);
       product = await this.productRepository.findOne({
         where: {
-          name: term.toLocaleLowerCase().trim(),
+          name: term.trim(),
+        },
+      });
+    }
+    if (product === null) {
+      this.logger.log(`Product searching by slug: ${term}`);
+      product = await this.productRepository.findOne({
+        where: {
           slug: term.toLocaleLowerCase().trim(),
         },
       });
