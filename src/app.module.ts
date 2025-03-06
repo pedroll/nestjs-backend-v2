@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppService } from './app.service';
 import { EnvConfig } from '../config/app.config';
 import { joiValidationSchema } from '../config/joiValidationSchema';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { joiValidationSchema } from '../config/joiValidationSchema';
       }),
       inject: [ConfigService],
     }),
+    ProductsModule,
   ],
   controllers: [],
   providers: [AppService],
