@@ -1,28 +1,27 @@
-### GET list product
-GET {{ apiUrl }}/product
+### GET list products
+GET {{ apiUrl }}/products
 
-### GET Paginated list product
-GET {{ apiUrl }}/product?limit=10&offset=30
+### GET Paginated list products
+GET {{ apiUrl }}/products?limit=10&offset=30
 
-### GET product by no
-GET {{ apiUrl }}/product/1
-### GET product by name
-GET {{ apiUrl }}/product/ford
-### GET product by Mongo Id
-GET {{ apiUrl }}/product/{{testId}}
+### GET products by no
+GET {{ apiUrl }}/products/1
+### GET products by name
+GET {{ apiUrl }}/products/ford
+### GET products by Mongo Id
+GET {{ apiUrl }}/products/{{testId}}
 
 
-### POST create product
-POST {{ apiUrl }}/product
+### POST create products
+POST {{ apiUrl }}/products
 Content-Type: application/json
 
 {
-  "name": "Ford2",
-  "no": 2
+
 }
 
-### POST create product malformed payload
-POST {{ apiUrl }}/product
+### POST create products malformed payload
+POST {{ apiUrl }}/products
 Content-Type: application/json
 
 {
@@ -31,8 +30,8 @@ Content-Type: application/json
   "unknownField": "unknown"
 }
 
-### Patch update product
-PATCH {{ apiUrl }}/product/{{testId}}
+### Patch update products
+PATCH {{ apiUrl }}/products/{{testId}}
 Content-Type: application/json
 
 {
@@ -40,6 +39,6 @@ Content-Type: application/json
 
 }
 
-### DELETE product
-DELETE {{ apiUrl }}/product/67c78d4e84e0f96ed5a27ac7
+### DELETE products
+DELETE {{ apiUrl }}/products/67c78d4e84e0f96ed5a27ac7
 
