@@ -11,7 +11,7 @@ export class Product {
   })
   name: string;
 
-  @Column('numeric', {
+  @Column('float', {
     default: 0,
   })
   price: number;
@@ -30,7 +30,7 @@ export class Product {
   slug: string;
 
   // stock es opcional
-  @Column('numeric', {
+  @Column('float', {
     default: 0,
   })
   stock: number;
