@@ -5,15 +5,18 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-
+# Teslo Backend
+===============
 ## Description
 
 Mockup bakend NestJs based on udemy course
 
-* [x] Restful
-* [x] Mongo
-* [x] Seed initial data from external Api
-* [x] Http adapter, para comodo reemplazo de requests o actualizaciones de librerias http
+* [ ] Restful
+* [x] Postgres
+* [ ] TypeOrm
+* [ ] Mongo
+* [ ] Seed initial data from external Api
+* [ ] Http adapter, para comodo reemplazo de requests o actualizaciones de librerias http
 * [ ] Websockets
 * [ ] Authentication
 * [ ] Authorization
