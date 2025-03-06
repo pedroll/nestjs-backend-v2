@@ -19,6 +19,7 @@ import { isUUID } from 'class-validator';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Injectable()
 export class ProductsService {
@@ -59,13 +60,9 @@ export class ProductsService {
    * Retrieves a paginated list of Product from the database.
    *
    * @returns A promise that resolves to an array of Product.*/
-  async findAll() {
-    // findAll(paginationDto: PaginationDto) {
+  async findAll(paginationDto: PaginationDto) {
     // default values
-    // const defaultLimit = +process.env.DEFAULT_LIMIT || 10;
-    //const { limit = this.paginationLimit, offset = 0 } = paginationDto;
-    const limit = this.configService.get<number>('paginationLimit');
-    const offset = 0;
+    const { limit = this.paginationLimit, offset = 0 } = paginationDto;
     return await this.productRepository.find({
       skip: offset,
       take: limit,

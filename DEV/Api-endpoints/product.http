@@ -2,7 +2,7 @@
 GET {{ apiUrl }}/products
 
 ### GET Paginated list products
-GET {{ apiUrl }}/products?limit=10&offset=30
+GET {{ apiUrl }}/products?limit=2&offset=3
 
 ### GET products by no
 GET {{ apiUrl }}/products/1
