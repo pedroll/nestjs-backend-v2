@@ -1,0 +1,2 @@
+### GET Populate Seed data
+GET {{ apiUrl }}/seed

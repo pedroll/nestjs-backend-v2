@@ -1,0 +1,45 @@
+### GET list product
+GET {{ apiUrl }}/product
+
+### GET Paginated list product
+GET {{ apiUrl }}/product?limit=10&offset=30
+
+### GET product by no
+GET {{ apiUrl }}/product/1
+### GET product by name
+GET {{ apiUrl }}/product/ford
+### GET product by Mongo Id
+GET {{ apiUrl }}/product/{{testId}}
+
+
+### POST create product
+POST {{ apiUrl }}/product
+Content-Type: application/json
+
+{
+  "name": "Ford2",
+  "no": 2
+}
+
+### POST create product malformed payload
+POST {{ apiUrl }}/product
+Content-Type: application/json
+
+{
+  "brand": "Ford",
+  "model": 1,
+  "unknownField": "unknown"
+}
+
+### Patch update product
+PATCH {{ apiUrl }}/product/{{testId}}
+Content-Type: application/json
+
+{
+  "no": 2
+
+}
+
+### DELETE product
+DELETE {{ apiUrl }}/product/67c78d4e84e0f96ed5a27ac7
+
