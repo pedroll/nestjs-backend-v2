@@ -82,30 +82,27 @@ export class ProductsService {
    */
   async findOne(term: string) {
     let product: Product | null = null;
-
-    // Check if term is a valid UUID
+    // Search by Product name
     if (isUUID(term)) {
       this.logger.log(`Product searching by ID: ${term}`);
       product = await this.productRepository.findOne({ where: { id: term } });
-    }
-    if (product === null) {
-      // Search by Product name
-      this.logger.log(`Product searching by name : ${term}`);
-      product = await this.productRepository.findOne({
-        where: {
+    } else {
+      this.logger.log(`Product searching by uuid, slug, name : ${term}`);
+      // product = await this.productRepository.findOne({
+      //   where: [
+      //     { name: term.trim() },
+      //     { slug: term.toLocaleLowerCase().trim() },
+      //   ],
+      // });
+      // alternativa con queryBuilder
+      const queriBuilder = this.productRepository.createQueryBuilder();
+      product = await queriBuilder
+        .where('LOWER(name) = LOWER(:name) or slug = :slug', {
           name: term.trim(),
-        },
-      });
+          slug: term.trim().toLocaleLowerCase(),
+        })
+        .getOne();
     }
-    if (product === null) {
-      this.logger.log(`Product searching by slug: ${term}`);
-      product = await this.productRepository.findOne({
-        where: {
-          slug: term.toLocaleLowerCase().trim(),
-        },
-      });
-    }
-
     // Throw an exception if no Product is found
     if (!product) {
       throw new NotFoundException(`Product '${term}' not found`);
