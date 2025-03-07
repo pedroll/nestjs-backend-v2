@@ -9,7 +9,7 @@ GET {{ apiUrl }}/products/a8c78b3c-43da-42da-9a73-d57fcd22c256
 ### GET products by name
 GET {{ apiUrl }}/products/pedros-product5
 ### GET products by Mongo Id
-GET {{ apiUrl }}/products/Pedro
+GET {{ apiUrl }}/products/pedro
 
 
 ### POST create products
@@ -33,11 +33,14 @@ Content-Type: application/json
 }
 
 ### Patch update products
-PATCH {{ apiUrl }}/products/{{testId}}
+PATCH {{ apiUrl }}/products/329278b3-8c0a-449b-b3a0-e19da3ef1aca
 Content-Type: application/json
 
 {
-  "no": 2
+  "name": "Pedro's product",
+  "price": 100,
+  "description": "New description",
+  "slug": "new-slug"
 
 }
 
