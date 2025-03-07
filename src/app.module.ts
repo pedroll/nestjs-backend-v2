@@ -11,7 +11,6 @@ import { EnvConfig } from '../config/app.config';
 import { joiValidationSchema } from '../config/joiValidationSchema';
 import { ProductsModule } from './products/products.module';
 import { CommonModule } from './common/common.module';
-import process from 'node:process';
 
 @Module({
   imports: [
@@ -23,14 +22,14 @@ import process from 'node:process';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USER'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
+        host: configService.get<string>('postgres.dbHost'),
+        port: configService.get<number>('postgres.port'),
+        username: configService.get<string>('postgres.dbUser'),
+        password: configService.get<string>('postgres.dbPassword'),
+        database: configService.get<string>('postgres.dbName'),
         // entities: [__dirname + '/../**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
-        synchronize: configService.get<boolean>('SYNC_ENTITIES'),
+        synchronize: configService.get<boolean>('postgres.syncEntities'),
       }),
       inject: [ConfigService],
     }),
@@ -40,7 +39,7 @@ import process from 'node:process';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
-        uri: `${configService.get<boolean>('MONGO_URI')}:${configService.get<boolean>('MONGO_PORT')}/${configService.get<boolean>('MONGO_DB')}`,
+        uri: `${configService.get<string>('mongoDb.uri')}:${configService.get<number>('mongoDb.port')}/${configService.get<string>('mongoDb.dbName')}`,
       }),
       inject: [ConfigService],
     }), // Mongoose connection
