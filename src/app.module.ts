@@ -1,6 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ServeStaticModule } from '@nestjs/serve-static';
+
+import { join } from 'path';
 
 import { AppService } from './app.service';
 import { EnvConfig } from '../config/app.config';
@@ -28,6 +31,9 @@ import { CommonModule } from './common/common.module';
         synchronize: configService.get<boolean>('SYNC_ENTITIES'),
       }),
       inject: [ConfigService],
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '../..', 'public'),
     }),
     ProductsModule,
     CommonModule,

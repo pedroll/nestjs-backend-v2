@@ -15,6 +15,7 @@ Postgres version to be expanded with other features
 * [x] Restful
 * [x] Postgres
 * [x] TypeOrm PG
+* [x] Serve static files front
 * [ ] Mongo
 * [ ] Mongo Mongoose
 * [ ] Seed initial data from external Api
