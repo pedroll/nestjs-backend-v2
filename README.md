@@ -16,8 +16,8 @@ Postgres version to be expanded with other features
 * [x] Postgres
 * [x] TypeOrm PG
 * [x] Serve static files front
-* [ ] Mongo
-* [ ] Mongo Mongoose
+* [x] Mongo
+* [x] Mongo Mongoose
 * [ ] Seed initial data from external Api
 * [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
 * [ ] Websockets
