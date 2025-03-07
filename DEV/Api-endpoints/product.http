@@ -40,7 +40,8 @@ Content-Type: application/json
   "name": "Pedro's product10",
   "price": 100,
   "description": "New description",
-  "slug": "new slug2"
+  "slug": "new slug2",
+  "tags": ["firstTag"]
 
 }
 
