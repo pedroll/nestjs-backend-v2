@@ -5,31 +5,32 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
-# Teslo Backend
+Skeleton NestJs Backend
 ===============
 ## Description
 
 Mockup bakend NestJs based on udemy course
+Postgres version to be expanded with other features
 
-* [ ] Restful
+* [x] Restful
 * [x] Postgres
-* [ ] TypeOrm
+* [x] TypeOrm PG
 * [ ] Mongo
+* [ ] Mongo Mongoose
 * [ ] Seed initial data from external Api
-* [ ] Http adapter, para comodo reemplazo de requests o actualizaciones de librerias http
+* [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
 * [ ] Websockets
 * [ ] Authentication
 * [ ] Authorization
 * [ ] dockerized
-* [ ] Postgres
-* [ ] TypeOrm
 
 Caracteristicas no incluidas en el curso:
-
+* [ ] Handle multiple databases
 * [ ] Graphql
 * [ ] Microservices
 * [ ] Doble Auth JWT / OAUTH
 * [ ] Typed responses
+* [ ] Tests
 * [ ] Shared library with responses para monorepo
 * [ ] Monorepo con Frontend
 
