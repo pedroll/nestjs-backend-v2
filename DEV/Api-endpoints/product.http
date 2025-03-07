@@ -37,10 +37,10 @@ PATCH {{ apiUrl }}/products/329278b3-8c0a-449b-b3a0-e19da3ef1aca
 Content-Type: application/json
 
 {
-  "name": "Pedro's product",
+  "name": "Pedro's product10",
   "price": 100,
   "description": "New description",
-  "slug": "new-slug"
+  "slug": "new slug2"
 
 }
 
