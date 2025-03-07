@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
+import { MongooseModule } from '@nestjs/mongoose';
 
 import { join } from 'path';
 
@@ -10,6 +11,7 @@ import { EnvConfig } from '../config/app.config';
 import { joiValidationSchema } from '../config/joiValidationSchema';
 import { ProductsModule } from './products/products.module';
 import { CommonModule } from './common/common.module';
+import process from 'node:process';
 
 @Module({
   imports: [
@@ -35,6 +37,13 @@ import { CommonModule } from './common/common.module';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '../..', 'public'),
     }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        uri: `${configService.get<boolean>('MONGO_URI')}:${configService.get<boolean>('MONGO_PORT')}/${configService.get<boolean>('MONGO_DB')}`,
+      }),
+      inject: [ConfigService],
+    }), // Mongoose connection
     ProductsModule,
     CommonModule,
   ],
