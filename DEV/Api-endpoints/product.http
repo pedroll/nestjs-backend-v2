@@ -4,10 +4,10 @@ GET {{ apiUrl }}/products
 ### GET Paginated list products
 GET {{ apiUrl }}/products?limit=2&offset=3
 
-### GET products by no
-GET {{ apiUrl }}/products/1
+### GET products by uuid
+GET {{ apiUrl }}/products/a8c78b3c-43da-42da-9a73-d57fcd22c256
 ### GET products by name
-GET {{ apiUrl }}/products/ford
+GET {{ apiUrl }}/products/pedros-product5
 ### GET products by Mongo Id
 GET {{ apiUrl }}/products/Pedro
 

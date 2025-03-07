@@ -3,6 +3,7 @@ import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
+import eslintNestJs from '@darraghor/eslint-plugin-nestjs-typed';
 
 export default tseslint.config(
   {
@@ -10,6 +11,7 @@ export default tseslint.config(
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.stylisticTypeChecked,
   eslintPluginPrettierRecommended,
   {
     languageOptions: {
@@ -17,6 +19,7 @@ export default tseslint.config(
         ...globals.node,
         ...globals.jest,
       },
+      //parser,
       ecmaVersion: 5,
       sourceType: 'module',
       parserOptions: {
@@ -25,6 +28,7 @@ export default tseslint.config(
       },
     },
   },
+  eslintNestJs.configs.flatRecommended, // This is the recommended ruleset for this plugin
   {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
