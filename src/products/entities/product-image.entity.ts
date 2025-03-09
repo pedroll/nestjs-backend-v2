@@ -8,7 +8,7 @@ export class ProductImage {
   id: string;
 
   @Column('text')
-  name: string;
+  url: string;
 
   @ManyToOne(() => Product, (product) => product.images)
   product: Product;

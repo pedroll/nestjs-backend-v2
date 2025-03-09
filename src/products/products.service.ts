@@ -20,6 +20,7 @@ import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Product } from './entities/product.entity';
 import { PaginationDto } from '../common/dto/pagination.dto';
+import { ProductImage } from './entities/product-image.entity';
 
 @Injectable()
 export class ProductsService {
@@ -29,6 +30,10 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+
+    @InjectRepository(ProductImage)
+    private readonly productImageRepository: Repository<ProductImage>,
+
     private readonly configService: ConfigService,
   ) {
     this.paginationLimit = this.configService.get<number>('paginationLimit');
@@ -42,14 +47,22 @@ export class ProductsService {
    * @throws {BadRequestException} If a product with the same name already exists.
    * @throws {InternalServerErrorException} If an error occurs during the creation process.
    */
-  async create(createProductDto: CreateProductDto): Promise<Product | void> {
+  async create(createProductDto: CreateProductDto) {
     try {
+      //transformar string[] a productImage[]
+      const { images = [], ...productDetails } = createProductDto;
       // Create a new Product instance
-      const newProduct = this.productRepository.create(createProductDto);
+      const newProduct = this.productRepository.create({
+        ...productDetails,
+        images: images.map((url) =>
+          this.productImageRepository.create({ url }),
+        ),
+      });
       // Save the new Product to the database
       await this.productRepository.save(newProduct);
 
-      return newProduct;
+      //por decision retornamos la image como string[]
+      return { ...newProduct, images: images };
     } catch (error) {
       // Handle any exceptions that occur during the creation process
       this.handleDbException(error);
@@ -112,10 +125,13 @@ export class ProductsService {
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
+    const { images = [], ...productDetails } = updateProductDto;
+
     // prepara update
     const product = await this.productRepository.preload({
       id: id,
-      ...updateProductDto,
+      ...productDetails,
+      images: images.map((url) => this.productImageRepository.create({ url })),
     });
     // si no existe el producto
     if (!product)

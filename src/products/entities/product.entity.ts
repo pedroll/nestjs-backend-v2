@@ -64,7 +64,9 @@ export class Product {
   tags: string[];
 
   // images
-  @OneToMany(() => ProductImage, (productImage) => productImage.product)
+  @OneToMany(() => ProductImage, (productImage) => productImage.product, {
+    cascade: true,
+  })
   images: ProductImage[];
 
   @BeforeInsert()

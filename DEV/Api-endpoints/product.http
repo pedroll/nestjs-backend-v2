@@ -17,9 +17,12 @@ POST {{ apiUrl }}/products
 Content-Type: application/json
 
 {
-  "name": "Pedro's product",
+  "name": "Pedro's product104",
   "sizes": ["small", "medium", "large"],
-  "gender": "man"
+  "gender": "man",
+  "price": 100,
+  "tags": ["firstTag", "secondTag"],
+  "images": ["image1", "image2"]
 }
 
 ### POST create products malformed payload
@@ -41,7 +44,8 @@ Content-Type: application/json
   "price": 100,
   "description": "New description",
   "slug": "new slug2",
-  "tags": ["firstTag"]
+  "tags": ["firstTag"],
+  "gender": "men"
 
 }
 
