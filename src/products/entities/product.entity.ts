@@ -66,6 +66,7 @@ export class Product {
   // images
   @OneToMany(() => ProductImage, (productImage) => productImage.product, {
     cascade: true,
+    eager: true, // eager true para que traiga las images cuando sean cargados como con find*
   })
   images: ProductImage[];
 

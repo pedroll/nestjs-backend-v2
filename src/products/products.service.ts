@@ -30,10 +30,8 @@ export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
-
     @InjectRepository(ProductImage)
     private readonly productImageRepository: Repository<ProductImage>,
-
     private readonly configService: ConfigService,
   ) {
     this.paginationLimit = this.configService.get<number>('paginationLimit');
@@ -76,14 +74,19 @@ export class ProductsService {
   async findAll(paginationDto: PaginationDto) {
     // default values
     const { limit = this.paginationLimit, offset = 0 } = paginationDto;
-    return await this.productRepository.find({
+    const products = await this.productRepository.find({
       skip: offset,
       take: limit,
       order: {
         name: 'ASC',
       },
-      select: ['id', 'name', 'price', 'description'],
+      relations: ['images'],
     });
+
+    return products.map(({ images, ...rest }) => ({
+      ...rest,
+      images: images.map((image) => image.url),
+    }));
   }
 
   /**
@@ -108,12 +111,13 @@ export class ProductsService {
       //   ],
       // });
       // alternativa con queryBuilder
-      const queriBuilder = this.productRepository.createQueryBuilder();
+      const queriBuilder = this.productRepository.createQueryBuilder('prod'); // creamos alias
       product = await queriBuilder
         .where('LOWER(name) = LOWER(:name) or slug = :slug', {
           name: term.trim(),
           slug: term.trim().toLocaleLowerCase(),
         })
+        .leftJoinAndSelect('prod.images', 'images')
         .getOne();
     }
     // Throw an exception if no Product is found
@@ -122,6 +126,25 @@ export class ProductsService {
     }
 
     return product;
+  }
+
+  /**
+   * Retrieves a plain representation of a Product by its term (ID, slug, or name).
+   *
+   * This method first calls the `findOne` method to retrieve the Product entity,
+   * then transforms the `images` property from an array of `ProductImage` entities
+   * to an array of image URLs.
+   *
+   * @param {string} term - The term to search for (ID, slug, or name).
+   * @returns {Promise<{ images: string[] } & Omit<Product, 'images'>>} A promise that resolves to the found Product with images as URLs.
+   * @throws {NotFoundException} If no Product is found.
+   */
+  async findOnePlain(term: string) {
+    const { images = [], ...rest } = await this.findOne(term);
+    return {
+      ...rest,
+      images: images.map((image) => image.url),
+    };
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {

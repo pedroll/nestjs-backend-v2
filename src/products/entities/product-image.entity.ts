@@ -4,7 +4,7 @@ import { Product } from './product.entity';
 @Entity()
 export class ProductImage {
   // Usamos PostgreSQL, por lo tanto, los tipos de columna deben ser acordes
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('increment')
   id: string;
 
   @Column('text')
