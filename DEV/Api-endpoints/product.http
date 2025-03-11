@@ -17,7 +17,7 @@ POST {{ apiUrl }}/products
 Content-Type: application/json
 
 {
-  "name": "Pedro's product104",
+  "name": "Pedro's product1040",
   "sizes": ["small", "medium", "large"],
   "gender": "man",
   "price": 100,
@@ -36,19 +36,15 @@ Content-Type: application/json
 }
 
 ### Patch update products
-PATCH {{ apiUrl }}/products/329278b3-8c0a-449b-b3a0-e19da3ef1aca
+PATCH {{ apiUrl }}/products/6758a61c-b6d5-4b7b-8776-d230058576b6
 Content-Type: application/json
 
 {
-  "name": "Pedro's product10",
-  "price": 100,
-  "description": "New description",
-  "slug": "new slug2",
-  "tags": ["firstTag"],
-  "gender": "men"
-
+  "name": "Pedro's product99",
+  "price": 110.99,
+  "images": ["image99"]
 }
 
 ### DELETE products
-DELETE {{ apiUrl }}/products/15b711fd-5438-486e-ba2f-a133494c1996
+DELETE {{ apiUrl }}/products/6758a61c-b6d5-4b7b-8776-d230058576b6
 

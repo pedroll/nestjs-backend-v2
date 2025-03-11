@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import {
   CannotCreateEntityIdMapError,
+  DataSource,
   EntityNotFoundError,
   QueryFailedError,
   Repository,
@@ -33,6 +34,7 @@ export class ProductsService {
     @InjectRepository(ProductImage)
     private readonly productImageRepository: Repository<ProductImage>,
     private readonly configService: ConfigService,
+    private readonly dataSource: DataSource,
   ) {
     this.paginationLimit = this.configService.get<number>('paginationLimit');
   }
@@ -97,7 +99,7 @@ export class ProductsService {
    * @throws NotFoundException if no Product is found.
    */
   async findOne(term: string) {
-    let product: Product | null = null;
+    let product: Product | null;
     // Search by Product name
     if (isUUID(term)) {
       this.logger.log(`Product searching by ID: ${term}`);
@@ -152,20 +154,42 @@ export class ProductsService {
 
     // prepara update
     const product = await this.productRepository.preload({
-      id: id,
+      id,
       ...productDetails,
-      images: images.map((url) => this.productImageRepository.create({ url })),
     });
     // si no existe el producto
     if (!product)
       throw new NotFoundException(`Product with id '${id}' not found`);
 
-    // actualiza el producto
+    // create query runner
+    // const queryRunner =
+    //   this.productRepository.manager.connection.createQueryRunner();
+    const queryRunner = this.dataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
     try {
-      return await this.productRepository.save(product);
+      // si vienen imagenes delete toda  product images
+      if (images.length > 0) {
+        await queryRunner.manager.delete(ProductImage, { product: { id } });
+      }
+      // actualiza el producto
+      await queryRunner.manager.save(Product, {
+        ...product,
+        images: images.map((url) =>
+          this.productImageRepository.create({ url }),
+        ),
+      });
+      // commit transaction
+      await queryRunner.commitTransaction();
     } catch (error) {
+      // Rollback transaction if an error occurs
+      await queryRunner.rollbackTransaction();
       this.handleDbException(error);
+    } finally {
+      // Release the query runner
+      await queryRunner.release();
     }
+    return { ...product, images };
   }
 
   /**
