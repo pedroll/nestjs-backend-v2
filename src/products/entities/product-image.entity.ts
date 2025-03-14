@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Product } from './product.entity';
 
-@Entity()
+@Entity({ name: 'product_images' })
 export class ProductImage {
   // Usamos PostgreSQL, por lo tanto, los tipos de columna deben ser acordes
   @PrimaryGeneratedColumn('increment')

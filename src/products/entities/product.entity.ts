@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { ProductImage } from './product-image.entity';
 
-@Entity()
+@Entity({ name: 'products' })
 export class Product {
   // Usamos PostgreSQL, por lo tanto, los tipos de columna deben ser acordes
   @PrimaryGeneratedColumn('uuid')
