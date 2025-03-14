@@ -11,6 +11,7 @@ import { EnvConfig } from '../config/app.config';
 import { joiValidationSchema } from '../config/joiValidationSchema';
 import { ProductsModule } from './products/products.module';
 import { CommonModule } from './common/common.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -45,6 +46,7 @@ import { CommonModule } from './common/common.module';
     }), // Mongoose connection
     ProductsModule,
     CommonModule,
+    SeedModule,
   ],
   controllers: [],
   providers: [AppService],
