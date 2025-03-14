@@ -46,5 +46,5 @@ Content-Type: application/json
 }
 
 ### DELETE products
-DELETE {{ apiUrl }}/products/6758a61c-b6d5-4b7b-8776-d230058576b6
+DELETE {{ apiUrl }}/products/93550563-306f-4fe7-bc81-b23e86c637bc
 

@@ -212,6 +212,15 @@ export class ProductsService {
     }
   }
 
+  async removeAllProducts() {
+    const query = this.productRepository.createQueryBuilder('product');
+    try {
+      await query.delete().where({}).execute();
+    } catch (error) {
+      this.handleDbException(error);
+    }
+  }
+
   /**
    * Handles exceptions that occur during database operations.
    *
