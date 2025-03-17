@@ -1,0 +1,13 @@
+### Post upload product images
+POST {{ apiUrl }}/files/product
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="nest.jpeg"
+
+// The 'input.txt' file will be uploaded
+< ./nest.jpeg
+
+
+
+
