@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { imageFileFilter } from './helpers/imageFilter.helper';
 
 @Controller('files')
 export class FilesController {
@@ -13,8 +14,12 @@ export class FilesController {
 
   //upload files
   @Post('product')
-  @UseInterceptors(FileInterceptor('file'))
-  async uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return await this.filesService.uploadFile(file);
+  @UseInterceptors(
+    FileInterceptor('file', {
+      fileFilter: imageFileFilter,
+    }),
+  )
+  uploadFile(@UploadedFile() file: Express.Multer.File) {
+    return this.filesService.uploadFile(file);
   }
 }
