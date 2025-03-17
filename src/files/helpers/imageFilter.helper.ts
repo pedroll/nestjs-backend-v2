@@ -3,7 +3,7 @@ import { Logger } from '@nestjs/common';
 const logger = new Logger('ImageFileFilter');
 
 export const imageFileFilter = (
-  req: Request,
+  req: Express.Request,
   file: Express.Multer.File,
   callback: Function,
 ) => {
