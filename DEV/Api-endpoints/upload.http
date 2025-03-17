@@ -4,10 +4,10 @@ Content-Type: multipart/form-data; boundary=boundary
 
 --boundary
 Content-Disposition: form-data; name="file"; filename="nest.jpeg"
-
+Content-Type: image/jpeg
 // The 'input.txt' file will be uploaded
-// ./nest.jpeg
-< ./some.txt
+< ./nest.jpeg
+// < ./some.txt
 
 
 

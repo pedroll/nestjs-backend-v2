@@ -7,6 +7,7 @@ import {
 import { FilesService } from './files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { imageFileFilter } from './helpers/imageFilter.helper';
+import { diskStorage } from 'multer';
 
 @Controller('files')
 export class FilesController {
@@ -17,6 +18,11 @@ export class FilesController {
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: imageFileFilter,
+      limits: { fileSize: 1024 * 1024 },
+      storage: diskStorage({
+        // todo: for security best practices must be storeed in eseparate filesytem, bucket, cdn
+        destination: './static/uploads/products',
+      }),
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
