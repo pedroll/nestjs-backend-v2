@@ -5,10 +5,12 @@ Content-Type: multipart/form-data; boundary=boundary
 --boundary
 Content-Disposition: form-data; name="file"; filename="nest.jpeg"
 Content-Type: image/jpeg
-// The 'input.txt' file will be uploaded
+
 < ./nest.jpeg
 // < ./some.txt
 
+### Get product images
+GET {{ apiUrl }}/files/product/0599c6ea-538a-48b0-8d44-5f3c611a680d.jpeg
 
 
 
