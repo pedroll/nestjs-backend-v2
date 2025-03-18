@@ -1,0 +1,47 @@
+### GET list users
+GET {{ apiUrl }}/users
+
+### GET Paginated list users
+GET {{ apiUrl }}/users?limit=2&offset=3
+
+### GET users by uuid
+GET {{ apiUrl }}/users/Pedro's user103
+### GET users by name
+GET {{ apiUrl }}/users/pedros-user5
+### GET users by Mongo Id
+GET {{ apiUrl }}/users/pedro
+
+
+### POST create users
+POST {{ apiUrl }}/auth/register
+Content-Type: application/json
+
+{
+"email": "pedro@pedro.com",
+  "fullName": "Pedro",
+  "password": "123456aA$"
+}
+
+### POST create users malformed payload
+POST {{ apiUrl }}/users
+Content-Type: application/json
+
+{
+  "brand": "Ford",
+  "model": 1,
+  "unknownField": "unknown"
+}
+
+### Patch update users
+PATCH {{ apiUrl }}/users/6758a61c-b6d5-4b7b-8776-d230058576b6
+Content-Type: application/json
+
+{
+  "name": "Pedro's user99",
+  "price": 110.99,
+  "images": ["image99"]
+}
+
+### DELETE users
+DELETE {{ apiUrl }}/users/93550563-306f-4fe7-bc81-b23e86c637bc
+
