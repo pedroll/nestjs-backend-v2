@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('users')
 export class User {
@@ -45,4 +51,16 @@ export class User {
     select: false,
   })
   updatedAt: Date;
+
+  @BeforeInsert()
+  checkFieldsBeforeInsert() {
+    this.email = this.email.toLowerCase().trim();
+    this.createdAt = new Date();
+  }
+
+  @BeforeUpdate()
+  checkFieldsBeforeUpdate() {
+    this.updatedAt = new Date();
+    this.email = this.email.toLowerCase().trim();
+  }
 }

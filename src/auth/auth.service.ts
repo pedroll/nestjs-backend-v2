@@ -5,16 +5,21 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto, LoginUserDto, UpdateAuthDto } from './dto';
-import { Repository } from 'typeorm';
-import { User } from './entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+
+import { User } from './entities/user.entity';
+import { JwtPayload } from './interfaces/jwt-payload.interface';
+import { PartialType } from '@nestjs/mapped-types';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto) {
@@ -26,10 +31,13 @@ export class AuthService {
         password: bcrypt.hashSync(password, 10),
       });
       await this.userRepository.save(user);
-      // delete user.password;
-      // todo: remove sensible information from the response
-      // todo: return a JWT token
-      return user;
+      const response: Partial<User> = { ...user };
+      delete response.password;
+
+      return {
+        ...response,
+        token: this.getJwtToken({ email: user.email }),
+      };
     } catch (error) {
       this.handleDbError(error);
     }
@@ -51,9 +59,12 @@ export class AuthService {
     // } catch (error) {
     //   this.handleDbError(error);
     // }
-
-    return user;
-    // todo: return a JWT token
+    const response: Partial<User> = { ...user };
+    delete response.password;
+    return {
+      ...response,
+      token: this.getJwtToken({ email: user.email }),
+    };
   }
 
   findAll() {
@@ -70,6 +81,11 @@ export class AuthService {
 
   remove(id: number) {
     return `This action removes a #${id} auth`;
+  }
+
+  private getJwtToken(jwtPayload: JwtPayload) {
+    const token = this.jwtService.sign(jwtPayload);
+    return token;
   }
 
   private handleDbError(error: any): never {
