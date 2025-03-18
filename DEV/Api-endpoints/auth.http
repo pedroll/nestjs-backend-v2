@@ -31,6 +31,10 @@ Content-Type: application/json
   "password": "123456aA$"
 }
 
+### GET Test private route
+GET {{ apiUrl }}/auth/private
+Authorization: Bearer {{token}}
+
 ### Patch update users
 PATCH {{ apiUrl }}/users/6758a61c-b6d5-4b7b-8776-d230058576b6
 Content-Type: application/json
