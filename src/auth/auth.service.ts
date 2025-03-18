@@ -12,7 +12,6 @@ import * as bcrypt from 'bcrypt';
 
 import { User } from './entities/user.entity';
 import { JwtPayload } from './interfaces/jwt-payload.interface';
-import { PartialType } from '@nestjs/mapped-types';
 
 @Injectable()
 export class AuthService {
@@ -36,7 +35,7 @@ export class AuthService {
 
       return {
         ...response,
-        token: this.getJwtToken({ email: user.email }),
+        token: this.getJwtToken({ id: user.id }),
       };
     } catch (error) {
       this.handleDbError(error);
@@ -48,7 +47,7 @@ export class AuthService {
     const { password, email } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { email },
-      select: ['email', 'password'],
+      select: ['email', 'password', 'id'],
     });
     if (!user) {
       throw new UnauthorizedException('Invalid credentials email');
@@ -61,9 +60,12 @@ export class AuthService {
     // }
     const response: Partial<User> = { ...user };
     delete response.password;
+    // importante checkear contenido payload
+    if (!user.id) throw new UnauthorizedException('Invalid credentials');
+
     return {
       ...response,
-      token: this.getJwtToken({ email: user.email }),
+      token: this.getJwtToken({ id: user.id }),
     };
   }
 
