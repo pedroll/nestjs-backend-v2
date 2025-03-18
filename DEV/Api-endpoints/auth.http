@@ -22,14 +22,13 @@ Content-Type: application/json
   "password": "123456aA$"
 }
 
-### POST create users malformed payload
-POST {{ apiUrl }}/users
+### POST Login user
+POST {{ apiUrl }}/auth/login
 Content-Type: application/json
 
 {
-  "brand": "Ford",
-  "model": 1,
-  "unknownField": "unknown"
+  "email": "pedro52@pedro.com",
+  "password": "123456aA$"
 }
 
 ### Patch update users

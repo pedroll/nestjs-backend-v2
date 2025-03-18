@@ -13,6 +13,7 @@ export class User {
 
   @Column('varchar', {
     length: 255,
+    select: false, // excluimos el campo de la respuesta
   })
   password: string;
 
@@ -23,6 +24,7 @@ export class User {
 
   @Column('bool', {
     default: true,
+    select: false,
   })
   isActive: boolean;
 
@@ -32,13 +34,15 @@ export class User {
   })
   role: string[];
 
-  @Column('text', {
+  @Column('timestamp', {
     nullable: true,
+    select: false,
   })
   createdAt: Date;
 
   @Column('timestamp', {
     nullable: true,
+    select: false,
   })
   updatedAt: Date;
 }
