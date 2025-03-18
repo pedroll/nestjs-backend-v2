@@ -10,7 +10,7 @@ Content-Type: image/jpeg
 // < ./some.txt
 
 ### Get product images
-GET {{ apiUrl }}/files/product/0599c6ea-538a-48b0-8d44-5f3c611a680d.jpeg
+GET {{ apiUrl }}/files/product/1473809-00-A_1_2000.jpg
 
 
 
