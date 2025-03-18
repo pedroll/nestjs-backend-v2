@@ -2,6 +2,7 @@ import * as Joi from 'joi';
 
 export const joiValidationSchema = Joi.object({
   //# Nest
+  HOST_API: Joi.string().required(),
   GLOBAL_PREFIX: Joi.string().required(),
   PORT: Joi.number().required(),
   // #psql
