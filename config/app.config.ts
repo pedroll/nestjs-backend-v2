@@ -1,6 +1,7 @@
 export const EnvConfig = () => ({
   hostApi: process.env.HOST_API ?? 'http://localhost:3000',
   port: parseInt(process.env.PORT ?? '3000', 10),
+  jwtSecret: process.env.JWT_SECRET,
   globalPrefix: process.env.GLOBAL_PREFIX ?? 'api/v1',
   postgres: {
     dbHost: process.env.DB_HOST ?? 'localhost',
