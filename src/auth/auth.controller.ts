@@ -1,16 +1,18 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto, UpdateAuthDto, LoginUserDto } from './dto';
+import { CreateUserDto, LoginUserDto, UpdateAuthDto } from './dto';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from './decorators/get-user.decorator';
+import { User } from './entities/user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -28,8 +30,17 @@ export class AuthController {
 
   @Get('private')
   @UseGuards(AuthGuard())
-  private() {
-    return 'This is a private route';
+  private(
+    // @Req() req: Express.Request
+    @GetUser() user: User,
+  ) {
+    // console.log(req.user);
+    console.log(user);
+    return {
+      ok: true,
+      message: 'This is a private route',
+      user,
+    };
   }
 
   @Get()
