@@ -40,6 +40,10 @@ Authorization: Bearer {{token}}
 GET {{ apiUrl }}/auth/private2
 Authorization: Bearer {{token}}
 
+### GET Test private route3
+GET {{ apiUrl }}/auth/private3
+Authorization: Bearer {{token}}
+
 ### Patch update users
 PATCH {{ apiUrl }}/users/6758a61c-b6d5-4b7b-8776-d230058576b6
 Content-Type: application/json
