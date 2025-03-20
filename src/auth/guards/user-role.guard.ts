@@ -7,7 +7,8 @@ import {
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
 import { User } from '../entities/user.entity';
-import { AuthRequest } from '../interfaces/auth-request.interface';
+import { AuthRequest } from '../interfaces';
+import { META_ROLES } from '../decorators/role-protected.decorator';
 
 @Injectable()
 export class UserRoleGuard implements CanActivate {
@@ -25,7 +26,7 @@ export class UserRoleGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     // Retrieve the required roles from the route's metadata
     const validRoles = this.reflector.get<string[]>(
-      'roles',
+      META_ROLES,
       context.getHandler(),
     );
     // console.log(validRoles);
