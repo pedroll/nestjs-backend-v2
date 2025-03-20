@@ -3,8 +3,10 @@ import {
   BeforeUpdate,
   Column,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Product } from '../../products/entities/product.entity';
 
 @Entity('users')
 export class User {
@@ -51,6 +53,13 @@ export class User {
     select: false,
   })
   updatedAt: Date;
+
+  // product
+  @OneToMany(
+    () => Product, // entidad relacion
+    (product) => product.user, //campo relacion destino
+  )
+  product: Product;
 
   @BeforeInsert()
   checkFieldsBeforeInsert() {
