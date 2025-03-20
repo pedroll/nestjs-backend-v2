@@ -22,16 +22,34 @@ import { UserRoleGuard } from './guards/user-role.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  /**
+   * Register a new user.
+   * @param createUserDto - Data Transfer Object containing user registration details.
+   * @returns The created user.
+   */
   @Post('register')
   create(@Body() createUserDto: CreateUserDto) {
     return this.authService.create(createUserDto);
   }
 
+  /**
+   * Log in a user.
+   * @param loginUserDto - Data Transfer Object containing user login details.
+   * @returns The logged-in user with a JWT token.
+   */
   @Post('login')
   login(@Body() loginUserDto: LoginUserDto) {
     return this.authService.login(loginUserDto);
   }
 
+  /**
+   * Access a private route.
+   * @param user - The authenticated user.
+   * @param userEmail - The email of the authenticated user.
+   * @param rawHeaders - The raw headers of the request.
+   * @param headers - The headers of the request.
+   * @returns An object containing user details and request headers.
+   */
   @Get('private')
   @UseGuards(AuthGuard())
   private(
@@ -49,12 +67,17 @@ export class AuthController {
       user,
       userEmail,
       headers,
-      rawHeaders: rawHeaders,
+      rawHeaders,
     };
   }
 
+  /**
+   * Access a private route with role-based authorization.
+   * @param user - The authenticated user.
+   * @returns An object containing user details.
+   */
   @Get('private2')
-  @SetMetadata('roles', ['admin', 'user'])
+  @SetMetadata('roles', ['admin', 'super-user'])
   @UseGuards(AuthGuard(), UserRoleGuard)
   private2(@GetUser() user: User) {
     console.log(user);
