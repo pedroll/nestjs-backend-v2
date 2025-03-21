@@ -3,24 +3,25 @@ import { ProductsService } from '../products/products.service';
 import { initialData } from './data/seed-data';
 import { CreateProductDto } from '../products/dto/create-product.dto';
 import { Product } from '../products/entities/product.entity';
+import { User } from '../auth/entities/user.entity';
 
 @Injectable()
 export class SeedService {
   constructor(private readonly productsService: ProductsService) {}
 
-  async runSeed(): Promise<any> {
-    await this.insertNewProducts();
+  async runSeed(user: User): Promise<any> {
+    await this.insertNewProducts(user);
     return { message: 'Seed executed' };
   }
 
-  private async insertNewProducts() {
+  private async insertNewProducts(user: User) {
     await this.productsService.removeAllProducts();
 
     const products = initialData.products;
     const inserPromises: any[] = [];
 
     products.forEach((product) => {
-      inserPromises.push(this.productsService.create(product));
+      inserPromises.push(this.productsService.create(product, user));
     });
 
     await Promise.all(inserPromises);

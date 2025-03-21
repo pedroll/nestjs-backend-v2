@@ -6,7 +6,7 @@ Authorization: Bearer {{token}}
 GET {{ apiUrl }}/products?limit=2&offset=3
 
 ### GET products by uuid
-GET {{ apiUrl }}/products/Pedro's product103
+GET {{ apiUrl }}/products/{{ productId }}
 ### GET products by name
 GET {{ apiUrl }}/products/pedros-product5
 ### GET products by Mongo Id

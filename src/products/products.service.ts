@@ -17,11 +17,11 @@ import {
 } from 'typeorm';
 import { isUUID } from 'class-validator';
 
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import { CreateProductDto, UpdateProductDto } from './dto';
 import { Product } from './entities/product.entity';
 import { PaginationDto } from '../common/dto/pagination.dto';
 import { ProductImage } from './entities/product-image.entity';
+import { User } from '../auth/entities/user.entity';
 
 @Injectable()
 export class ProductsService {
@@ -47,7 +47,7 @@ export class ProductsService {
    * @throws {BadRequestException} If a product with the same name already exists.
    * @throws {InternalServerErrorException} If an error occurs during the creation process.
    */
-  async create(createProductDto: CreateProductDto) {
+  async create(createProductDto: CreateProductDto, user: User) {
     try {
       //transformar string[] a productImage[]
       const { images = [], ...productDetails } = createProductDto;
@@ -57,6 +57,7 @@ export class ProductsService {
         images: images.map((url) =>
           this.productImageRepository.create({ url }),
         ),
+        user,
       });
       // Save the new Product to the database
       await this.productRepository.save(newProduct);
@@ -149,7 +150,7 @@ export class ProductsService {
     };
   }
 
-  async update(id: string, updateProductDto: UpdateProductDto) {
+  async update(id: string, updateProductDto: UpdateProductDto, user: User) {
     const { images = [], ...productDetails } = updateProductDto;
 
     // prepara update
@@ -172,6 +173,8 @@ export class ProductsService {
       if (images.length > 0) {
         await queryRunner.manager.delete(ProductImage, { product: { id } });
       }
+      // relaciona el usuario
+      product.user = user;
       // actualiza el producto
       await queryRunner.manager.save(Product, {
         ...product,
