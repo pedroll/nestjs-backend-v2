@@ -1,3 +1,10 @@
+interface SeedUser {
+  email: string;
+  fullName: string;
+  password: string;
+  role: ('super-user' | 'admin' | 'user')[];
+}
+
 interface SeedProduct {
   description: string;
   images: string[];
@@ -16,6 +23,7 @@ type ValidTypes = 'shirts' | 'pants' | 'hoodies' | 'hats';
 
 interface SeedData {
   products: SeedProduct[];
+  users: SeedUser[];
 }
 
 export const initialData: SeedData = {
@@ -697,6 +705,26 @@ export const initialData: SeedData = {
       tags: ['shirt'],
       name: 'Kids Corp Jacket',
       gender: 'kid',
+    },
+  ],
+  users: [
+    {
+      email: 'pedro@gmail.com',
+      password: '123456@',
+      role: ['admin'],
+      fullName: 'pedro',
+    },
+    {
+      email: 'maria@gmail.com',
+      password: '123456@',
+      role: ['super-user'],
+      fullName: 'maria',
+    },
+    {
+      email: 'eva@gmail.com',
+      password: '123456@',
+      role: ['user'],
+      fullName: 'eva',
     },
   ],
 };
