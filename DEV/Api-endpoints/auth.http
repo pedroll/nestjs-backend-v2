@@ -28,10 +28,10 @@ Content-Type: application/json
 
 {
   "email": "pedro@gmail.com",
-  "password": "123456@"
+  "password": "123456Aa$"
 }
 
-### GET Test private route
+### GET Check auth status
 GET {{ apiUrl }}/auth/check-auth-status
 Authorization: Bearer {{token}}
 

@@ -29,6 +29,8 @@ export class UserRoleGuard implements CanActivate {
       META_ROLES,
       context.getHandler(),
     );
+    if (!validRoles) return true; // if no roles are required, allow access
+    if (validRoles.length === 0) return true;
     // console.log(validRoles);
 
     // Get the request object from the execution context
