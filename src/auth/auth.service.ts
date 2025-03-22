@@ -85,6 +85,13 @@ export class AuthService {
     return `This action removes a #${id} auth`;
   }
 
+  async checkAuthStatus(user: User) {
+    return {
+      ...user,
+      token: this.getJwtToken({ id: user.id }),
+    };
+  }
+
   private getJwtToken(jwtPayload: JwtPayload) {
     const token = this.jwtService.sign(jwtPayload);
     return token;

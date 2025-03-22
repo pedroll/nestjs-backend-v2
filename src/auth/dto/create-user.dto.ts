@@ -6,6 +6,10 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { ConfigService } from '@nestjs/config';
+import { EnvConfig } from '../../../config/app.config';
+
+const configService = new ConfigService({ app: EnvConfig() });
 
 export class CreateUserDto {
   @IsEmail()
@@ -18,7 +22,7 @@ export class CreateUserDto {
   @IsString()
   @MinLength(6)
   @MaxLength(50)
-  @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
+  @Matches(configService.get('passwordPattern')!, {
     message:
       'The password must have a Uppercase, lowercase letter and a number',
   })

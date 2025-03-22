@@ -5,7 +5,10 @@ export const joiValidationSchema = Joi.object({
   HOST_API: Joi.string().required(),
   GLOBAL_PREFIX: Joi.string().required(),
   PORT: Joi.number().required(),
+  //# JWT
   JWT_SECRET: Joi.string().required(),
+  JWT_SALT: Joi.string().required(),
+  PASSWORD_PATTERN: Joi.string().required(),
   // #psql
   PAGINATION_LIMIT: Joi.number().required(),
   DB_HOST: Joi.string().required(),

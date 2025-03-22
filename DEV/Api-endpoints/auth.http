@@ -17,7 +17,7 @@ POST {{ apiUrl }}/auth/register
 Content-Type: application/json
 
 {
-  "email": "pedro56@pedro.com",
+  "email": "pedro@gmail.com",
   "fullName": "Pedro",
   "password": "123456aA$"
 }
@@ -27,9 +27,13 @@ POST {{ apiUrl }}/auth/login
 Content-Type: application/json
 
 {
-  "email": "pedro56@pedro.com",
-  "password": "123456aA$"
+  "email": "pedro@gmail.com",
+  "password": "123456@"
 }
+
+### GET Test private route
+GET {{ apiUrl }}/auth/check-auth-status
+Authorization: Bearer {{token}}
 
 ### GET Test private route
 GET {{ apiUrl }}/auth/private

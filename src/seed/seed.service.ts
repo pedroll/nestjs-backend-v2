@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { ConfigService } from '@nestjs/config';
 
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -7,10 +8,12 @@ import * as bcrypt from 'bcrypt';
 import { ProductsService } from '../products/products.service';
 import { initialData } from './data/seed-data';
 import { User } from '../auth/entities/user.entity';
+import { CreateUserDto } from '../auth/dto';
 
 @Injectable()
 export class SeedService {
   constructor(
+    private readonly configService: ConfigService,
     private readonly productsService: ProductsService,
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
@@ -34,19 +37,34 @@ export class SeedService {
   }
 
   private async insertNewUsers() {
-    const seedUsers = initialData.users;
+    const seedUsers: CreateUserDto[] = initialData.users;
     const users: User[] = [];
-    seedUsers.forEach((seedUser) => {
-      // hash password
-      seedUser.password = bcrypt.hashSync(seedUser.password, 10);
-      const user = this.userRepository.create(seedUser as unknown as User);
-      users.push(user);
-    });
 
-    // necesitamos los users con id
-    const dbUsers = await this.userRepository.save(users);
+    try {
+      const passwordPattern: string =
+        this.configService.get<string>('passwordPattern')!;
+      const passwordRegex = new RegExp(passwordPattern.slice(1, -1));
 
-    return dbUsers[0];
+      seedUsers.forEach((seedUser: CreateUserDto) => {
+        if (!passwordRegex.test(seedUser.password)) {
+          console.error({
+            passwordRegex,
+            passwordPattern,
+            password: seedUser.password,
+          });
+          throw new Error('Password does not meet the required pattern');
+        }
+        seedUser.password = bcrypt.hashSync(seedUser.password, 10);
+        const user = this.userRepository.create(seedUser as unknown as User);
+        users.push(user);
+      });
+
+      const dbUsers = await this.userRepository.save(users);
+      return dbUsers[0];
+    } catch (error) {
+      console.error('Error inserting new users:', error);
+      throw new Error('Failed to insert new users');
+    }
   }
 
   private async insertNewProducts(user: User) {
