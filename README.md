@@ -18,11 +18,13 @@ Postgres version to be expanded with other features
 * [x] Serve static files front
 * [x] Mongo
 * [x] Mongo Mongoose
-* [ ] Seed initial data from external Api
-* [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
+* [x] Seed initial data
+* [x] Authentication
+* [x] Authorization
+* [x] JWT
+* [x] Swagger documentation
 * [ ] Websockets
-* [ ] Authentication
-* [ ] Authorization
+* [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
 * [ ] dockerized
 
 Caracteristicas no incluidas en el curso:

@@ -1,15 +1,20 @@
 import { Controller, Get } from '@nestjs/common';
-import { SeedService } from './seed.service';
-import { Auth, GetUser } from '../auth/decorators';
-import { ValidRoles } from '../auth/interfaces';
-import { User } from '../auth/entities/user.entity';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { SeedService } from './seed.service';
+
+@ApiTags('Seed')
 @Controller('seed')
 export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
   @Get()
-  //@Auth(ValidRoles.SUPER_USER, ValidRoles.ADMIN)
+  @ApiOperation({ summary: 'Execute the seed process' })
+  @ApiResponse({
+    status: 200,
+    description: 'The seed process has been successfully executed.',
+  })
+  @ApiResponse({ status: 403, description: 'Forbidden' })
   executeSeed() {
     return this.seedService.runSeed();
   }

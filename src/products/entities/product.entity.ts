@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -12,72 +13,122 @@ import { User } from '../../auth/entities/user.entity';
 
 @Entity({ name: 'products' })
 export class Product {
-  // Usamos PostgreSQL, por lo tanto, los tipos de columna deben ser acordes
+  // Usamos PSQL, por lo tanto, los tipos de columna deben ser acordes
+  @ApiProperty({
+    example: 'uuid',
+    description: 'The unique identifier of the product',
+    uniqueItems: true,
+  })
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @ApiProperty({
+    example: 'Product Name',
+    description: 'The name of the product',
+  })
   @Column('text', {
     unique: true,
   })
   name: string;
 
+  @ApiProperty({
+    example: 100.0,
+    description: 'The price of the product',
+    default: 0,
+  })
   @Column('float', {
     default: 0,
   })
   price: number;
 
-  // despription es opcional
-  @Column({
-    type: 'text',
+  @ApiProperty({
+    example: 'Product description',
+    description: 'The description of the product',
+    nullable: true,
+    default: null,
+  })
+  @Column('text', {
     nullable: true,
   })
   description: string;
 
-  //eslug es opcional
+  @ApiProperty({
+    example: 'product-slug',
+    description: 'The slug of the product',
+    uniqueItems: true,
+  })
   @Column('text', {
     unique: true,
   })
   slug: string;
 
-  // stock es opcional
+  @ApiProperty({
+    example: 10,
+    description: 'The stock of the product',
+    default: 0,
+  })
   @Column('float', {
     default: 0,
   })
   stock: number;
 
-  //sizes []
+  @ApiProperty({
+    example: ['S', 'M', 'L'],
+    description: 'The available sizes of the product',
+    nullable: true,
+    isArray: true,
+    default: [],
+  })
   @Column('text', {
     array: true,
     nullable: true,
   })
   sizes: string[];
 
-  // gender es opcional
+  @ApiProperty({
+    example: 'unisex',
+    description: 'The gender category of the product',
+    nullable: true,
+    default: null,
+  })
   @Column('text', {
     nullable: true,
   })
   gender: string;
 
-  // tags
+  @ApiProperty({
+    example: ['tag1', 'tag2'],
+    description: 'The tags associated with the product',
+    isArray: true,
+    default: [],
+  })
   @Column('text', {
     array: true,
     default: [],
   })
   tags: string[];
 
-  // images
+  @ApiProperty({
+    type: [ProductImage],
+    description: 'The images of the product',
+    isArray: true,
+    default: [],
+  })
   @OneToMany(() => ProductImage, (productImage) => productImage.product, {
     cascade: true,
-    eager: true, // eager true para que traiga las images cuando sean cargados como con find*
+    eager: true,
   })
   images: ProductImage[];
 
-  // user
+  // @ApiProperty({
+  //   // type: User,
+  //   // description: 'The user who created the product',
+  // })
   @ManyToOne(
-    () => User, // entidad relacion
-    (user) => user.product, //campo relacion destino
+    () => User, // entidad relación
+    (user) => user.product, //campo relación destino
     {
-      eager: true, // cargamos la relacion al haver find
+      eager: true, // cargamos la relación al hacer find
     },
   )
   user: User;

@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsNotEmpty,
@@ -12,6 +13,12 @@ import { EnvConfig } from '../../../config/app.config';
 const configService = new ConfigService({ app: EnvConfig() });
 
 export class CreateUserDto {
+  @ApiProperty({
+    example: 'user@example.com',
+    description: 'The email of the user',
+    minLength: 6,
+    maxLength: 50,
+  })
   @IsEmail()
   @IsString()
   @MinLength(6)
@@ -19,6 +26,13 @@ export class CreateUserDto {
   @IsNotEmpty()
   email: string;
 
+  @ApiProperty({
+    example: 'Password123!',
+    description: 'The password of the user',
+    minLength: 6,
+    maxLength: 50,
+    pattern: configService.get('passwordPattern')!,
+  })
   @IsString()
   @MinLength(6)
   @MaxLength(50)
@@ -28,6 +42,12 @@ export class CreateUserDto {
   })
   password: string;
 
+  @ApiProperty({
+    example: 'John Doe',
+    description: 'The full name of the user',
+    minLength: 3,
+    maxLength: 50,
+  })
   @IsString()
   @MinLength(3)
   @MaxLength(50)
