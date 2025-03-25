@@ -23,7 +23,7 @@ Postgres version to be expanded with other features
 * [x] Authorization
 * [x] JWT
 * [x] Swagger documentation
-* [ ] Websockets
+* [x] Websockets
 * [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
 * [ ] dockerized
 
