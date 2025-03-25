@@ -9,12 +9,13 @@ export class PaginationDto {
       'The number of items to skip before starting to collect the result set',
     required: false,
     minimum: 1,
+    default: 1,
   })
   @IsOptional()
   @IsInt()
   @IsPositive()
   @Min(1)
-  @Type(() => Number) // transformacion explicita en lugar de explicita
+  @Type(() => Number) // transformación explicita en lugar de explicita
   offset: number;
 
   @ApiProperty({
@@ -27,6 +28,6 @@ export class PaginationDto {
   @IsInt()
   @IsPositive()
   @Min(1)
-  @Type(() => Number) // transformacion explicita en lugar de explicita
+  @Type(() => Number) // transformación explicita en lugar de explicita
   limit: number;
 }

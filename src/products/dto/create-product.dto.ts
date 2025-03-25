@@ -73,19 +73,21 @@ export class CreateProductDto {
     description: 'The available sizes of the product',
     default: [],
     nullable: true,
+    required: false,
   })
   @IsArray()
   @IsString({ each: true })
-  sizes: string[];
+  sizes?: string[];
 
   @ApiProperty({
     example: 'unisex',
     description: 'The gender category of the product',
     nullable: true,
+    required: false,
   })
   @IsIn(['man', 'woman', 'kids', 'unisex'])
   @IsString({ each: true })
-  gender: string;
+  gender?: string;
 
   @ApiProperty({
     example: ['tag1', 'tag2'],

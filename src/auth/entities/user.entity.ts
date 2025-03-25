@@ -80,6 +80,7 @@ export class User {
     example: '2023-01-01T00:00:00.000Z',
     description: 'The date when the user was created',
     nullable: true,
+    required: false,
   })
   @Column('timestamp', {
     nullable: true,
@@ -91,6 +92,7 @@ export class User {
     example: '2023-01-01T00:00:00.000Z',
     description: 'The date when the user was last updated',
     nullable: true,
+    required: false,
   })
   @Column('timestamp', {
     nullable: true,

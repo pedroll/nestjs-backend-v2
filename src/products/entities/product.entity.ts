@@ -18,6 +18,7 @@ export class Product {
     example: 'uuid',
     description: 'The unique identifier of the product',
     uniqueItems: true,
+    required: true,
   })
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -25,6 +26,7 @@ export class Product {
   @ApiProperty({
     example: 'Product Name',
     description: 'The name of the product',
+    required: true,
   })
   @Column('text', {
     unique: true,
@@ -35,6 +37,7 @@ export class Product {
     example: 100.0,
     description: 'The price of the product',
     default: 0,
+    required: false,
   })
   @Column('float', {
     default: 0,
@@ -46,6 +49,7 @@ export class Product {
     description: 'The description of the product',
     nullable: true,
     default: null,
+    required: false,
   })
   @Column('text', {
     nullable: true,
@@ -56,6 +60,7 @@ export class Product {
     example: 'product-slug',
     description: 'The slug of the product',
     uniqueItems: true,
+    required: false,
   })
   @Column('text', {
     unique: true,
@@ -66,6 +71,7 @@ export class Product {
     example: 10,
     description: 'The stock of the product',
     default: 0,
+    required: false,
   })
   @Column('float', {
     default: 0,
@@ -78,6 +84,7 @@ export class Product {
     nullable: true,
     isArray: true,
     default: [],
+    required: false,
   })
   @Column('text', {
     array: true,
@@ -90,6 +97,7 @@ export class Product {
     description: 'The gender category of the product',
     nullable: true,
     default: null,
+    required: false,
   })
   @Column('text', {
     nullable: true,
@@ -101,6 +109,7 @@ export class Product {
     description: 'The tags associated with the product',
     isArray: true,
     default: [],
+    required: false,
   })
   @Column('text', {
     array: true,
@@ -113,6 +122,7 @@ export class Product {
     description: 'The images of the product',
     isArray: true,
     default: [],
+    required: false,
   })
   @OneToMany(() => ProductImage, (productImage) => productImage.product, {
     cascade: true,
