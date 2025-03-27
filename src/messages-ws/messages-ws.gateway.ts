@@ -70,4 +70,10 @@ export class MessagesWsGateway
       this.messagesWsService.getConnectedClients(),
     );
   }
+
+  @SubscribeMessage('message-from-client')
+  handleMessageFromClient(client: Socket, payload: CreateMessagesWDto) {
+    console.log('message-from-client', payload);
+    this.webSocketServer.emit('message-from-server', payload);
+  }
 }
