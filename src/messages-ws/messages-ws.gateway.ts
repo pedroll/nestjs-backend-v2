@@ -47,10 +47,20 @@ export class MessagesWsGateway
   }
 
   handleConnection(client: Socket, ...args: any[]): any {
-    console.log('client connected', client.id);
+    // console.log('client connected', client.id);
+    this.messagesWsService.registerClient(client);
+    console.log(
+      'Connected clients:',
+      this.messagesWsService.getConnectedClients(),
+    );
   }
 
   handleDisconnect(client: Socket): any {
-    console.log('client disconnected', client.id);
+    // console.log('client disconnected', client.id);
+    this.messagesWsService.removeClient(client);
+    console.log(
+      'Connected clients:',
+      this.messagesWsService.getConnectedClients(),
+    );
   }
 }
