@@ -16,9 +16,10 @@ export class MessagesWsService {
     delete this.connectedClients[client.id];
   }
 
-  getConnectedClients(): number {
-    return Object.keys(this.connectedClients).length;
+  getConnectedClients(): string[] {
+    return Object.keys(this.connectedClients);
   }
+
   create(createMessagesWDto: CreateMessagesWDto) {
     return 'This action adds a new messagesW';
   }
