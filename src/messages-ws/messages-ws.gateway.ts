@@ -74,6 +74,20 @@ export class MessagesWsGateway
   @SubscribeMessage('message-from-client')
   handleMessageFromClient(client: Socket, payload: CreateMessagesWDto) {
     console.log('message-from-client', payload);
+
+    //! solo emite a si mismo
+    // client.emit('message-from-server', payload);
+
+    //! emite a todos menos asi mismo
+    // client.broadcast.emit('message-from-server', payload);
+
+    //! emite a todos los clientes
     this.webSocketServer.emit('message-from-server', payload);
+
+    // registramos cliente en una sala y emitimos solo a esa sala
+    // client.join('room1');
+    // client.join(client.id);
+    // client.join(client.email);
+    // client.to('room1').emit('message-from-server', payload);
   }
 }
