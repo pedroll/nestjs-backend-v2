@@ -5,7 +5,6 @@ import {
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
-  WsException,
 } from '@nestjs/websockets';
 import { JwtService } from '@nestjs/jwt';
 
@@ -15,6 +14,15 @@ import { MessagesWsService } from './messages-ws.service';
 import { CreateMessagesWDto } from './dto/create-messages-w.dto';
 import { UpdateMessagesWDto } from './dto/update-messages-w.dto';
 import { JwtPayload } from '../auth/interfaces';
+import { User } from '../auth/entities/user.entity';
+
+export type ConnectedClients = Record<
+  string,
+  {
+    socket: Socket;
+    user: User;
+  }
+>;
 
 @WebSocketGateway({
   cors: true,
@@ -57,17 +65,22 @@ export class MessagesWsGateway
     return this.messagesWsService.remove(id);
   }
 
-  handleConnection(client: Socket, ...args: any[]): any {
+  async handleConnection(client: Socket): Promise<any> {
     // console.log({ headers: client.handshake.headers });
     const token = client.handshake.headers.authorization!;
+    let payload: JwtPayload;
     try {
-      const payload: JwtPayload = this.jwtService.verify(token);
+      payload = this.jwtService.verify(token);
+      console.log({ payload });
+      await this.messagesWsService.registerClient(client, payload.id);
     } catch (error) {
+      console.error(error);
       client.disconnect(true);
-      throw new WsException(error);
+      return;
+      //!
+      // exit app
+      // throw new WsException(error);
     }
-    // console.log('client connected', client.id);
-    this.messagesWsService.registerClient(client);
 
     // emitimos el evento cada vez que se conecta un cliente
     this.webSocketServer.emit(
@@ -98,7 +111,10 @@ export class MessagesWsGateway
     // client.broadcast.emit('message-from-server', payload);
 
     //! emite a todos los clientes
-    this.webSocketServer.emit('message-from-server', payload);
+    this.webSocketServer.emit('message-from-server', {
+      fullName: this.messagesWsService.getUserFullNameBySocketId(client.id),
+      ...payload,
+    });
 
     // registramos cliente en una sala y emitimos solo a esa sala
     // client.join('room1');

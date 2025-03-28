@@ -27,9 +27,20 @@ POST {{ apiUrl }}/auth/login
 Content-Type: application/json
 
 {
+  "email": "maria@gmail.com",
+  "password": "123456Aa$"
+}
+
+### POST Login user2
+POST {{ apiUrl }}/auth/login
+Content-Type: application/json
+
+{
   "email": "pedro@gmail.com",
   "password": "123456Aa$"
 }
+
+
 
 ### GET Check auth status
 GET {{ apiUrl }}/auth/check-auth-status
