@@ -1,3 +1,5 @@
+import * as process from 'node:process';
+
 export const EnvConfig = () => ({
   hostApi: process.env.HOST_API ?? 'http://localhost:3000',
   port: parseInt(process.env.PORT ?? '3000', 10),
@@ -8,6 +10,10 @@ export const EnvConfig = () => ({
     '/(?:(?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$/',
   globalPrefix: process.env.GLOBAL_PREFIX ?? 'api/v1',
   postgres: {
+    ssl: process.env.STAGE === 'prod',
+    extra: {
+      ssl: process.env.STAGE === 'prod' ? { rejectUnauthorized: false } : null,
+    },
     dbHost: process.env.DB_HOST ?? 'localhost',
     dbUser: process.env.DB_User ?? 'Teslo',
     dbPassword: process.env.DB_PASSWORD ?? 'yoursecretpasword',

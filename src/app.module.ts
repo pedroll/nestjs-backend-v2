@@ -25,6 +25,8 @@ import { MessagesWsModule } from './messages-ws/messages-ws.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
+        ssl: configService.get('postgres.ssl'),
+        extra: configService.get('postgres.extra'),
         type: 'postgres',
         host: configService.get<string>('postgres.dbHost'),
         port: configService.get<number>('postgres.port'),

@@ -24,18 +24,15 @@ Postgres version to be expanded with other features
 * [x] JWT
 * [x] Swagger documentation
 * [x] Websockets
-* [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
-* [ ] dockerized
 
 Caracteristicas no incluidas en el curso:
-* [ ] Handle multiple databases
 * [ ] Graphql
-* [ ] Microservices
-* [ ] Doble Auth JWT / OAUTH
 * [ ] Typed responses
 * [ ] Tests
 * [ ] Shared library with responses para monorepo
 * [ ] Monorepo con Frontend
+* [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
+* [ ] dockerized
 
 ## 1- Project setup
 ```bash
