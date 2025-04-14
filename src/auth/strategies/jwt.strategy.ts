@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const { id } = payload; // Extract the user ID from the payload
     const user = await this.userRepository.findOne({
       where: { id },
-      select: ['id', 'email', 'isActive', 'role', 'fullName'], // Select specific fields from the user entity
+      select: ['id', 'email', 'isActive', 'roles', 'fullName'], // Select specific fields from the user entity
     });
 
     if (!user) throw new UnauthorizedException('Token no valido'); // Throw an exception if the user is not found

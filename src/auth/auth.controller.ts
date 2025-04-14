@@ -108,7 +108,7 @@ export class AuthController {
   }
 
   /**
-   * Access a private route with role-based authorization.
+   * Access a private route with roles-based authorization.
    * @param user - The authenticated user.
    * @returns An object containing user details.
    */
@@ -117,7 +117,7 @@ export class AuthController {
   @RoleProtected(ValidRoles.SUPER_USER)
   @UseGuards(AuthGuard(), UserRoleGuard)
   @ApiOperation({
-    summary: 'Access a private route with role-based authorization',
+    summary: 'Access a private route with roles-based authorization',
   })
   @ApiResponse({
     status: 200,
@@ -137,7 +137,7 @@ export class AuthController {
   @Get('private3')
   @Auth(ValidRoles.SUPER_USER, ValidRoles.ADMIN)
   @ApiOperation({
-    summary: 'Access a private route with role-based authorization',
+    summary: 'Access a private route with roles-based authorization',
   })
   @ApiResponse({
     status: 200,

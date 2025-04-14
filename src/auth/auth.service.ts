@@ -34,7 +34,7 @@ export class AuthService {
       delete response.password;
 
       return {
-        ...response,
+        user: response,
         token: this.getJwtToken({ id: user.id }),
       };
     } catch (error) {
@@ -47,7 +47,14 @@ export class AuthService {
     const { password, email } = loginUserDto;
     const user = await this.userRepository.findOne({
       where: { email },
-      select: ['email', 'password', 'id'],
+      select: {
+        email: true,
+        password: true,
+        id: true,
+        fullName: true,
+        isActive: true,
+        roles: true,
+      },
     });
     if (!user) {
       throw new UnauthorizedException('Invalid credentials email');
@@ -64,7 +71,7 @@ export class AuthService {
     if (!user.id) throw new UnauthorizedException('Invalid credentials');
 
     return {
-      ...response,
+      user: response,
       token: this.getJwtToken({ id: user.id }),
     };
   }
@@ -87,7 +94,7 @@ export class AuthService {
 
   async checkAuthStatus(user: User) {
     return {
-      ...user,
+      user,
       token: this.getJwtToken({ id: user.id }),
     };
   }
