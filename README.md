@@ -22,10 +22,13 @@ Postgres version to be expanded with other features
 * [x] Authentication
 * [x] Authorization
 * [x] JWT
-* [x] Swagger documentation
+* [x] Swagger documentation http://localhost:3000/api
 * [x] Websockets
 
 Caracteristicas no incluidas en el curso:
+
+* [ ] Unit tests
+* [ ] e2e tests
 * [ ] Graphql
 * [ ] Typed responses
 * [ ] Tests
@@ -47,17 +50,21 @@ docker compose up
 ## 3- Environment variables
 Clone __.env.template__ to __.env__ and set the values
 
-```bash
-
 ## 3- Compile and run the project
-```bash
-# serve
-yarn start
 
+# serve
+```bash
+yarn start
+```
 # watch mode
+
+```bash
 yarn start:dev
+```
 
 # production mode
+
+```bash
 yarn start:prod
 ```
 
