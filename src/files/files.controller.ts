@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Get,
   Param,
@@ -14,11 +15,15 @@ import { imageFileFilter } from './helpers/imageFilter.helper';
 import { diskStorage } from 'multer';
 import { imageRenamer } from './helpers/imageRenamer.helper';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
 
 @ApiTags('Files')
 @Controller('files')
 export class FilesController {
-  constructor(private readonly filesService: FilesService) {}
+  constructor(
+    private readonly filesService: FilesService,
+    private readonly configService: ConfigService,
+  ) {}
 
   @Get('product/:imageName')
   @ApiOperation({ summary: 'Get product image by name' })
@@ -55,6 +60,14 @@ export class FilesController {
     }),
   )
   uploadFile(@UploadedFile() file: Express.Multer.File) {
-    return this.filesService.uploadFile(file);
+    if (!file) {
+      throw new BadRequestException('Make sure that the file is an image');
+    }
+
+    const secureUrl = `${this.configService.get('HOST_API')}/files/product/${
+      file.filename
+    }`;
+
+    return { secureUrl, fileName: file.filename };
   }
 }
