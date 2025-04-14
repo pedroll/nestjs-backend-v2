@@ -30,4 +30,11 @@ export class PaginationDto {
   @Min(1)
   @Type(() => Number) // transformación explicita en lugar de explicita
   limit: number;
+
+  @ApiProperty({
+    default: '',
+    description: 'Filter results by gender',
+  })
+  @IsOptional()
+  gender: 'men' | 'women' | 'unisex' | 'kid';
 }

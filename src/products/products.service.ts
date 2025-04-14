@@ -76,7 +76,11 @@ export class ProductsService {
    * @returns A promise that resolves to an array of Product.*/
   async findAll(paginationDto: PaginationDto) {
     // default values
-    const { limit = this.paginationLimit, offset = 0 } = paginationDto;
+    const {
+      limit = this.paginationLimit,
+      offset = 0,
+      gender = '',
+    } = paginationDto;
     const products = await this.productRepository.find({
       skip: offset,
       take: limit,
@@ -84,6 +88,7 @@ export class ProductsService {
         id: 'ASC',
       },
       relations: ['images'],
+      where: gender ? [{ gender }, { gender: 'unisex' }] : {},
     });
 
     return products.map(({ images, ...rest }) => ({
