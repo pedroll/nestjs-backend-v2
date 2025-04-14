@@ -2,8 +2,10 @@
 import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
+import tseslint, { parser } from 'typescript-eslint';
+
 import eslintNestJs from '@darraghor/eslint-plugin-nestjs-typed';
+import pluginJest from 'eslint-plugin-jest';
 
 export default tseslint.config(
   {
@@ -13,13 +15,29 @@ export default tseslint.config(
   ...tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   eslintPluginPrettierRecommended,
+  eslintNestJs.configs.flatRecommended, // This is the recommended ruleset for this plugin
+  {
+    // update this to match your test files
+    files: ['**/*.spec.ts', '**/*.test.ts', '**/*.e2e-spec.ts'],
+    plugins: { jest: pluginJest },
+    languageOptions: {
+      globals: pluginJest.environments.globals.globals,
+    },
+    rules: {
+      'jest/no-disabled-tests': 'warn',
+      'jest/no-focused-tests': 'error',
+      'jest/no-identical-title': 'error',
+      'jest/prefer-to-have-length': 'warn',
+      'jest/valid-expect': 'error',
+    },
+  },
   {
     languageOptions: {
       globals: {
         ...globals.node,
         ...globals.jest,
       },
-      //parser,
+      parser,
       ecmaVersion: 5,
       sourceType: 'module',
       parserOptions: {
@@ -28,7 +46,6 @@ export default tseslint.config(
       },
     },
   },
-  eslintNestJs.configs.flatRecommended, // This is the recommended ruleset for this plugin
   {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',

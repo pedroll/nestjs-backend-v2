@@ -9,7 +9,7 @@
     "node": "22.x"
   },
   "scripts": {
-    "build": "nest build",
+    "build": "npm run test && npm run test:e2e && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main",
     "start:dev": "nest start --watch",
@@ -20,10 +20,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./jest-e2e.json",
+    "test:e2e:watch": "jest --config ./jest-e2e.json --watch",
+    "test:e2e:cov": "jest --config ./jest-e2e.json --coverage"
   },
   "dependencies": {
-    "@darraghor/eslint-plugin-nestjs-typed": "^6.4.4",
     "@nestjs/common": "^11.0.17",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.17",
@@ -42,7 +43,6 @@
     "class-validator": "^0.14.1",
     "joi": "^17.13.3",
     "mongoose": "^8.13.2",
-    "npm-check-updates": "^17.1.18",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1",
     "pg": "^8.14.1",
@@ -52,6 +52,9 @@
     "typeorm": "^0.3.22"
   },
   "devDependencies": {
+    "npm-check-updates": "^17.1.18",
+    "eslint-plugin-jest": "^28.11.0",
+    "@darraghor/eslint-plugin-nestjs-typed": "^6.4.4",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.24.0",
     "@nestjs/cli": "^11.0.6",
