@@ -36,7 +36,9 @@ export class ProductsService {
     private readonly configService: ConfigService,
     private readonly dataSource: DataSource,
   ) {
-    this.paginationLimit = this.configService.get<number>('paginationLimit');
+    this.paginationLimit = this.configService.get<number>(
+      'postgres.paginationLimit',
+    );
   }
 
   /**
