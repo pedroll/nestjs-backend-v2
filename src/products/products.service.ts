@@ -81,7 +81,7 @@ export class ProductsService {
       skip: offset,
       take: limit,
       order: {
-        name: 'ASC',
+        id: 'ASC',
       },
       relations: ['images'],
     });
