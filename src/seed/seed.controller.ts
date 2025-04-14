@@ -9,7 +9,11 @@ export class SeedController {
   constructor(private readonly seedService: SeedService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Execute the seed process' })
+  @ApiOperation({
+    summary: 'Destruye y crea una nueva base de datos',
+    description:
+      'Destruye y crea la base de datos de productos y usuarios, esto invalida también tokens existentes y usuarios creados.',
+  })
   @ApiResponse({
     status: 200,
     description: 'The seed process has been successfully executed.',
