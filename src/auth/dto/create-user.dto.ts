@@ -31,12 +31,12 @@ export class CreateUserDto {
     description: 'The password of the user',
     minLength: 6,
     maxLength: 50,
-    pattern: configService.get('passwordPattern')!,
+    pattern: configService.get('app.passwordPattern'),
   })
   @IsString()
   @MinLength(6)
   @MaxLength(50)
-  @Matches(configService.get('passwordPattern')!, {
+  @Matches(configService.get('app.passwordPattern')!, {
     message:
       'The password must have a Uppercase, lowercase letter and a number',
   })
