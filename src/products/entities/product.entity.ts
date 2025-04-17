@@ -102,7 +102,7 @@ export class Product {
   @Column('text', {
     nullable: true,
   })
-  gender: string;
+  gender?: string;
 
   @ApiProperty({
     example: ['tag1', 'tag2'],

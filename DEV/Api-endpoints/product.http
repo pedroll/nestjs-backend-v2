@@ -3,7 +3,8 @@ GET {{ apiUrl }}/products
 Authorization: Bearer {{token}}
 
 ### GET Paginated list products
-GET {{ apiUrl }}/products?limit=2&offset=3
+GET {{ apiUrl }}/products?limit=2&offset=4&gender=women
+
 
 ### GET products by uuid
 GET {{ apiUrl }}/products/{{ productId }}
