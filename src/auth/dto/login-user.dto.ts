@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import {
   IsEmail,
   IsNotEmpty,
@@ -7,6 +8,10 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { ConfigService } from '@nestjs/config';
+import EnvConfig from '../../config/app.config';
+
+const configService = new ConfigService({ app: EnvConfig() });
 
 export class LoginUserDto {
   @ApiProperty({
@@ -32,9 +37,8 @@ export class LoginUserDto {
   @IsString()
   @MinLength(6)
   @MaxLength(50)
-  @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-    message:
-      'The password must have a Uppercase, lowercase letter and a number',
+  @Matches(new RegExp(configService.get('app.passwordPattern')!), {
+    message: `The password must have a Uppercase, lowercase letter and a number ${configService.get('app.passwordPattern')}`,
   })
   password: string;
 }

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+
 import {
   IsEmail,
   IsNotEmpty,
@@ -9,7 +10,6 @@ import {
 } from 'class-validator';
 import { ConfigService } from '@nestjs/config';
 import EnvConfig from '../../config/app.config';
-
 const configService = new ConfigService({ app: EnvConfig() });
 
 export class CreateUserDto {

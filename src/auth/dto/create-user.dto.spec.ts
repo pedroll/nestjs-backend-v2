@@ -1,3 +1,7 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config(); // npm run start:dev --env-file .rnv
+
 import { validate } from 'class-validator';
 import { CreateUserDto } from './create-user.dto';
 
@@ -6,6 +10,9 @@ describe('CreateUserDto', () => {
 
   beforeEach(() => {
     dto = new CreateUserDto();
+    dto.email = 'test@example.com';
+    dto.password = 'Password123!';
+    dto.fullName = 'John Doe';
   });
 
   it('should be defined', () => {
@@ -52,47 +59,75 @@ describe('CreateUserDto', () => {
       expect(passwordErrors).toHaveLength(0);
     });
 
+    it('should fail when password does not match pattern', async () => {
+      dto.password = 'invalid-password';
+
+      const errors = await validate(dto);
+      const passwordErrors = errors.find(
+        (error) => error.property === 'password',
+      );
+
+      expect(errors.length).toBeGreaterThan(0);
+      expect(passwordErrors?.constraints).toHaveProperty('matches');
+    });
+
     it('should fail with password shorter than 6 characters', async () => {
       dto.password = 'Ab1!';
+
       const errors = await validate(dto);
+      const passwordErrors = errors.find(
+        (error) => error.property === 'password',
+      );
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].constraints).toHaveProperty('minLength');
+      expect(passwordErrors?.constraints).toHaveProperty('minLength');
     });
 
     it('should fail with password longer than 50 characters', async () => {
       dto.password = 'Aa1!' + 'a'.repeat(47);
+
       const errors = await validate(dto);
+      const passwordErrors = errors.find(
+        (error) => error.property === 'password',
+      );
+
       expect(errors.length).toBeGreaterThan(0);
-      expect(errors[0].constraints).toHaveProperty('maxLength');
+      expect(passwordErrors?.constraints).toHaveProperty('maxLength');
     });
 
     it('should fail with a password without uppercase', async () => {
       dto.password = 'password123!';
+
       const errors = await validate(dto);
-      // console.log(errors);
-      const passwordErrors = errors.filter(
+      const passwordErrors = errors.find(
         (error) => error.property === 'password',
       );
-      // console.log(passwordErrors);
-      expect(passwordErrors).toHaveLength(1);
+
+      expect(errors).toHaveLength(1);
+      expect(passwordErrors?.constraints).toHaveProperty('matches');
     });
 
     it('should fail with a password without lowercase', async () => {
       dto.password = 'PASSWORD123!';
+
       const errors = await validate(dto);
-      const passwordErrors = errors.filter(
+      const passwordErrors = errors.find(
         (error) => error.property === 'password',
       );
-      expect(passwordErrors).toHaveLength(1);
+
+      expect(errors).toHaveLength(1);
+      expect(passwordErrors?.constraints).toHaveProperty('matches');
     });
 
     it('should fail with a password without numbers', async () => {
       dto.password = 'Password!!';
+
       const errors = await validate(dto);
-      const passwordErrors = errors.filter(
+      const passwordErrors = errors.find(
         (error) => error.property === 'password',
       );
-      expect(passwordErrors).toHaveLength(1);
+
+      expect(errors.length).toBeGreaterThan(0);
+      expect(passwordErrors?.constraints).toHaveProperty('matches');
     });
   });
 
@@ -137,17 +172,15 @@ describe('CreateUserDto', () => {
 
   describe('complete dto validation', () => {
     it('should validate a complete valid dto', async () => {
-      dto.email = 'test@example.com';
-      dto.password = 'Password123!';
-      dto.fullName = 'John Doe';
-
       const errors = await validate(dto);
+
       expect(errors).toHaveLength(0);
     });
 
     it('should fail with empty dto', async () => {
+      dto = new CreateUserDto();
+
       const errors = await validate(dto);
-      expect(errors.length).toBeGreaterThan(0);
       expect(errors).toHaveLength(3); // one error for each required field
     });
   });
