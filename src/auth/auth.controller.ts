@@ -16,7 +16,7 @@ import { UserRoleGuard } from './guards/user-role.guard';
 import { IncomingHttpHeaders } from 'http';
 import { AuthService } from './auth.service';
 import { CreateUserDto, LoginUserDto, UpdateAuthDto } from './dto';
-import { Auth, GetRawHeaders, GetUser, RoleProtected } from './decorators';
+import { Auth, RawHeaders, GetUser, RoleProtected } from './decorators';
 import { User } from './entities/user.entity';
 import { ValidRoles } from './interfaces';
 
@@ -92,7 +92,7 @@ export class AuthController {
     // @Req() req: Express.Request
     @GetUser() user: User,
     @GetUser('email') userEmail: string,
-    @GetRawHeaders() rawHeaders: string[],
+    @RawHeaders() rawHeaders: string[],
     @Headers() headers: IncomingHttpHeaders,
   ) {
     // console.log(req.user);
