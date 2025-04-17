@@ -1,17 +1,19 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { AuthRequest } from '../interfaces/auth-request.interface';
+import { AuthRequest } from '../interfaces';
 
-export const GetRawHeaders = createParamDecorator(
-  (data: string, ctx: ExecutionContext): string | string[] => {
-    const req: AuthRequest = ctx.switchToHttp().getRequest();
-    const rawHeaders = req.rawHeaders;
+export const getRawHeaders = (
+  data: string,
+  ctx: ExecutionContext,
+): string | string[] => {
+  const req: AuthRequest = ctx.switchToHttp().getRequest();
+  const rawHeaders = req.rawHeaders;
 
-    if (!rawHeaders) {
-      throw new Error('Raw headers not found');
-    }
+  if (!rawHeaders) {
+    throw new Error('Raw headers not found');
+  }
 
-    if (data) return rawHeaders[data] as string;
+  if (data) return rawHeaders[data] as string;
 
-    return rawHeaders;
-  },
-);
+  return rawHeaders;
+};
+export const RawHeaders = createParamDecorator(getRawHeaders);
