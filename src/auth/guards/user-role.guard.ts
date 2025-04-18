@@ -13,7 +13,7 @@ import { META_ROLES } from '../decorators/role-protected.decorator';
 @Injectable()
 export class UserRoleGuard implements CanActivate {
   constructor(
-    private readonly reflector: Reflector, // Reflector is used to retrieve metadata
+    readonly reflector: Reflector, // Reflector is used to retrieve metadata
   ) {}
 
   /**
@@ -42,15 +42,6 @@ export class UserRoleGuard implements CanActivate {
     }
 
     const user: User = request.user;
-
-    console.log({ user });
-
-    // Ensure the user's roles are an array
-    if (!Array.isArray(user.roles)) {
-      throw new ForbiddenException(
-        `User roles must be an array, but got ${typeof user.roles}`, // ensure right type is infere in eslint
-      );
-    }
 
     // Check if the user has any of the valid roles
     for (const role of user.roles) {
