@@ -1,5 +1,6 @@
 import { validate } from 'class-validator';
 import { CreateProductDto } from './create-product.dto';
+import { plainToInstance } from 'class-transformer';
 
 describe('CreateProductDto', () => {
   let dto: CreateProductDto;
@@ -85,5 +86,45 @@ describe('CreateProductDto', () => {
     it('validates correct gender', () => validateField('gender', 'man'));
     it('fails with invalid gender type', () =>
       validateField('gender', 123, [{ type: 'isString' }]));
+  });
+
+  describe('CreateProductDto @Type(() => Number) transformation', () => {
+    it('should transform numeric strings to numbers', async () => {
+      const input = {
+        name: 'Sample Product',
+        price: '99.99', // String input supposed to be a number
+        stock: '50', // String input supposed to be a number
+        sizes: [],
+      };
+
+      const dtoPlain = plainToInstance(CreateProductDto, input);
+
+      // Check transformations
+      expect(dtoPlain.price).toBe(99.99);
+      expect(dtoPlain.stock).toBe(50);
+      expect(typeof dtoPlain.price).toBe('number');
+      expect(typeof dtoPlain.stock).toBe('number');
+
+      // Validate to ensure no other constraints are violated
+      const errors = await validate(dtoPlain);
+      expect(errors).toHaveLength(0);
+    });
+
+    it('should add validation error for non-numeric string in number fields', async () => {
+      const input = {
+        name: 'Sample Product',
+        price: 'not-a-number', // Incorrect input for testing validation
+        sizes: [],
+      };
+
+      const dtoPlain = plainToInstance(CreateProductDto, input);
+      const errors = await validate(dtoPlain);
+
+      // Check for validation errors
+      expect(errors.length).toBeGreaterThan(0);
+      expect(errors.map((err) => err.constraints)).toMatchObject([
+        { isNumber: expect.any(String) },
+      ]);
+    });
   });
 });
