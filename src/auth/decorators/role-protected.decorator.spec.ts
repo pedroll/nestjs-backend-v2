@@ -15,8 +15,9 @@ jest.mock('@nestjs/common', () => ({
 describe('RoleProtected', () => {
   it('should set metadata', () => {
     const roles: ValidRoles[] = [ValidRoles.ADMIN, ValidRoles.SUPER_USER];
-    const result = RoleProtected(...roles);
-    console.log(result);
+    //const result = RoleProtected(...roles);
+    RoleProtected(...roles);
+
     // expect(result).toEqual({ key: META_ROLES, value: roles });
     expect(SetMetadata).toHaveBeenCalled();
     expect(SetMetadata).toHaveBeenCalledWith(META_ROLES, roles);
