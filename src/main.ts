@@ -25,16 +25,15 @@ export async function bootstrap() {
     .setVersion('1.0')
     // .addTag('teslo')
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  const documentFactory = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
   app.enableCors();
   //app.enableCors(options);
 
-  await app.listen(process.env.PORT ?? 3000);
-  logger.log(
-    `Application is running on http://localhost:${process.env.PORT ?? 3000}`,
-  );
+  const port = process.env.PORT ?? 3000;
+  await app.listen(port);
+  logger.log(`Application is running on port ${port}`);
 }
 
 void bootstrap();

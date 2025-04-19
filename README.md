@@ -27,12 +27,11 @@ Postgres version to be expanded with other features
 
 Caracteristicas no incluidas en el curso:
 
-* [x] Eslint Rules NestJs jest
-* [ ] Unit tests COV 40% - using various styles for document
+* [x] Eslint Rules NestJs Jest
+* [x] Unit tests COV 72% - using various styles for document
 * [ ] e2e tests
 * [ ] Graphql
 * [ ] Typed responses
-* [ ] Tests
 * [ ] Shared library with responses para monorepo
 * [ ] Monorepo con Frontend
 * [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
