@@ -1,12 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
-async function bootstrap() {
+export async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const logger = new Logger('Bootstrap');
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // elimina los atributos que no esten en el dto
@@ -32,6 +32,9 @@ async function bootstrap() {
   //app.enableCors(options);
 
   await app.listen(process.env.PORT ?? 3000);
+  logger.log(
+    `Application is running on http://localhost:${process.env.PORT ?? 3000}`,
+  );
 }
 
-bootstrap();
+void bootstrap();
