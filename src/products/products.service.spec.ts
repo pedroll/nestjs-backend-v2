@@ -4,13 +4,15 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { ProductImage } from './entities/product-image.entity';
 import { ConfigService } from '@nestjs/config';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
+import { CreateProductDto } from './dto';
+import { User } from '../auth/entities/user.entity';
 
 describe('AuthService', () => {
   let service: ProductsService;
-  // let productsRepository: Repository<Product>;
-  // let productImageRepository: Repository<ProductImage>;
-  // let configService: ConfigService;
+  let productsRepository: Repository<Product>;
+  let productImageRepository: Repository<ProductImage>;
+
   beforeEach(async () => {
     const mockProductRepository = {
       find: jest.fn().mockReturnValue([]),
@@ -67,10 +69,49 @@ describe('AuthService', () => {
     }).compile();
 
     service = module.get<ProductsService>(ProductsService);
-    // productsRepository = module.get<Repository<Product>>(Repository);
+    productsRepository = module.get<Repository<Product>>(
+      getRepositoryToken(Product),
+    );
+    productImageRepository = module.get<Repository<ProductImage>>(
+      getRepositoryToken(ProductImage),
+    );
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should crete a product', async () => {
+    const dto = {
+      name: 'Test Product',
+      price: 100,
+      images: ['path/to/image1.jpg'],
+    } as CreateProductDto;
+    const user = {
+      id: '1',
+    } as User;
+
+    const { images, ...createDto } = dto;
+    const newProduct = {
+      id: '1',
+      ...createDto,
+      user,
+    } as unknown as Product;
+
+    jest.spyOn(productsRepository, 'create').mockReturnValue(newProduct);
+    jest.spyOn(productsRepository, 'save').mockResolvedValue(newProduct);
+    jest
+      .spyOn(productImageRepository, 'create')
+      .mockImplementation((imageData) => imageData as unknown as ProductImage);
+
+    const result = await service.create(dto, user);
+    console.log(result);
+    expect(result).toEqual({
+      id: '1',
+      name: 'Test Product',
+      price: 100,
+      user: { id: '1' },
+      images: ['path/to/image1.jpg'],
+    });
   });
 });
