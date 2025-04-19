@@ -96,7 +96,7 @@ export class AuthController {
     @Headers() headers: IncomingHttpHeaders,
   ) {
     // console.log(req.user);
-    console.log(user);
+    // console.log(user);
     return {
       ok: true,
       message: 'This is a private route',
@@ -126,7 +126,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   private2(@GetUser() user: User) {
-    console.log(user);
+    // console.log(user);
     return {
       ok: true,
       message: 'This is a private route',
@@ -146,7 +146,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   private3(@GetUser() user: User) {
-    console.log(user);
+    // console.log(user);
     return {
       ok: true,
       message: 'This is a private route',
