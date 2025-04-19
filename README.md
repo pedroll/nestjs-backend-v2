@@ -28,7 +28,7 @@ Postgres version to be expanded with other features
 Caracteristicas no incluidas en el curso:
 
 * [x] Eslint Rules NestJs Jest
-* [x] Unit tests COV 72% - using various styles for document
+* [x] Unit tests COV 74% - using various styles for document
 * [ ] e2e tests
 * [ ] Graphql
 * [ ] Typed responses

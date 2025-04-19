@@ -11,6 +11,7 @@ import {
   BadRequestException,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 describe('AuthService', () => {
   let service: ProductsService;
@@ -135,5 +136,58 @@ describe('AuthService', () => {
     await expect(result).rejects.toThrow(
       'XXXFailed to create Product: consult logs',
     );
+  });
+
+  it('shoulf find all products', async () => {
+    const dto = {
+      limit: 2,
+      offset: 2,
+      gender: 'unisex',
+    } as PaginationDto;
+
+    const products = [
+      {
+        id: '1',
+        name: 'Test Product 1',
+        price: 100,
+        gender: 'unisex',
+        images: [{ id: '1', url: 'image1.jpg' }],
+      },
+      {
+        id: '2',
+        name: 'Test Product 2',
+        price: 200,
+        gender: 'unisex',
+        images: [{ id: '2', url: 'image2.jpg' }],
+      },
+      {
+        id: '3',
+        name: 'Test Product 3',
+        price: 300,
+        gender: 'unisex',
+        images: [{ id: '3', url: 'image3.jpg' }],
+      },
+      {
+        id: '4',
+        name: 'Test Product 4',
+        price: 400,
+        gender: 'unisex',
+        images: [{ id: '4', url: 'image4.jpg' }],
+      },
+    ] as unknown as Product[];
+
+    jest.spyOn(productsRepository, 'find').mockResolvedValue(products);
+    jest.spyOn(productsRepository, 'count').mockResolvedValue(products.length);
+
+    const result = await service.findAll(dto);
+
+    expect(result).toEqual({
+      count: 4,
+      pages: 2,
+      products: products.map((product) => ({
+        ...product,
+        images: product.images.map((image) => image.url),
+      })),
+    });
   });
 });
