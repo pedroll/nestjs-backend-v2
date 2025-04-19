@@ -7,6 +7,10 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource, Repository } from 'typeorm';
 import { CreateProductDto } from './dto';
 import { User } from '../auth/entities/user.entity';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: ProductsService;
@@ -105,7 +109,7 @@ describe('AuthService', () => {
       .mockImplementation((imageData) => imageData as unknown as ProductImage);
 
     const result = await service.create(dto, user);
-    console.log(result);
+
     expect(result).toEqual({
       id: '1',
       name: 'Test Product',
@@ -113,5 +117,23 @@ describe('AuthService', () => {
       user: { id: '1' },
       images: ['path/to/image1.jpg'],
     });
+  });
+
+  it.todo('All others errors');
+
+  it('should throw if create fail', async () => {
+    const dto = {} as CreateProductDto;
+    const user = {} as User;
+
+    jest.spyOn(productsRepository, 'save').mockRejectedValue({
+      error: '23505',
+      message: 'XXXFailed to create Product: consult logs',
+    });
+    const result = service.create(dto, user);
+
+    await expect(result).rejects.toThrow(BadRequestException);
+    await expect(result).rejects.toThrow(
+      'XXXFailed to create Product: consult logs',
+    );
   });
 });

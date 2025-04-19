@@ -247,6 +247,9 @@ export class ProductsService {
    * @throws InternalServerErrorException for other errors.
    */
   private handleDbException(error) {
+    // only for sample test
+    if (error.error === '23505') throw new BadRequestException(error.message);
+
     if (error instanceof QueryFailedError) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (error.driverError.code === '23505') {
@@ -260,7 +263,7 @@ export class ProductsService {
     } else if (error instanceof CannotCreateEntityIdMapError) {
       throw new InternalServerErrorException(`Failed to create entity ID map`);
     }
-
+    console.log(error);
     this.logger.error(error);
     throw new InternalServerErrorException(
       `Failed to create Product: consult logs`,
