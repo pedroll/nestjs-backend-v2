@@ -27,7 +27,7 @@ Postgres version to be expanded with other features
 
 Caracteristicas no incluidas en el curso:
 
-* [ ] Unit tests COV 25%
+* [ ] Unit tests COV 40% - using various styles for document
 * [ ] e2e tests
 * [ ] Graphql
 * [ ] Typed responses
