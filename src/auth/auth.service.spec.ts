@@ -8,7 +8,11 @@ import { AuthService } from './auth.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { UnauthorizedException, BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -96,13 +100,34 @@ describe('AuthService', () => {
       expect(mockJwtService.sign).toHaveBeenCalledWith({ id: userId });
     });
 
-    it('should handle database errors', async () => {
-      const dbError = { code: '23505', detail: 'Email already exists' };
-      mockUserRepository.save.mockRejectedValue(dbError);
+    it('should throw BadRequestException for duplicate email', async () => {
+      const dbErrorEmail = { code: '23505', detail: 'Email already exists' };
+
+      mockUserRepository.save.mockRejectedValue(dbErrorEmail);
 
       await expect(service.create(createUserDto)).rejects.toThrow(
         BadRequestException,
       );
+    });
+
+    it('should throw InternalServerErrorException for duplicate email', async () => {
+      const inernalServerError = new InternalServerErrorException(
+        'Please check the logs',
+      );
+
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      jest.spyOn(console, 'log').mockImplementation(() => {});
+      jest.spyOn(userRepository, 'save').mockRejectedValue(inernalServerError);
+      // mockUserRepository.save.mockRejectedValue(inernalServerError);
+
+      await expect(service.create(createUserDto)).rejects.toThrow(
+        InternalServerErrorException,
+      );
+      await expect(service.create(createUserDto)).rejects.toThrow(
+        'Please check the logs',
+      );
+      expect(console.log).toHaveBeenCalledWith(inernalServerError);
+      expect(console.log).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -151,6 +176,22 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException for invalid password', async () => {
       mockUserRepository.findOne.mockResolvedValue(mockUser);
       jest.spyOn(bcrypt, 'compareSync').mockReturnValue(false);
+
+      await expect(service.login(loginUserDto)).rejects.toThrow(
+        UnauthorizedException,
+      );
+    });
+
+    it('should throw UnauthorizedException if no user.id to generate jwt payload', async () => {
+      const userWithoutId = {
+        email: 'test@example.com',
+        password: 'hashedPassword',
+        fullName: 'Test User',
+        isActive: true,
+        roles: ['user'],
+      };
+      mockUserRepository.findOne.mockResolvedValue(userWithoutId);
+      jest.spyOn(bcrypt, 'compareSync').mockReturnValue(true);
 
       await expect(service.login(loginUserDto)).rejects.toThrow(
         UnauthorizedException,
