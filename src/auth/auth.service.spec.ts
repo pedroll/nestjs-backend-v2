@@ -6,8 +6,7 @@ import * as bcrypt from 'bcrypt';
 
 import { AuthService } from './auth.service';
 import { User } from './entities/user.entity';
-import { CreateUserDto } from './dto/create-user.dto';
-import { LoginUserDto } from './dto/login-user.dto';
+import { CreateUserDto, LoginUserDto } from './dto';
 import {
   BadRequestException,
   InternalServerErrorException,
