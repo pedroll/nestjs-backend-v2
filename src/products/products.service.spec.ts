@@ -7,10 +7,7 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource, Repository } from 'typeorm';
 import { CreateProductDto } from './dto';
 import { User } from '../auth/entities/user.entity';
-import {
-  BadRequestException,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { PaginationDto } from '../common/dto/pagination.dto';
 
 describe('AuthService', () => {
@@ -96,6 +93,7 @@ describe('AuthService', () => {
       id: '1',
     } as User;
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { images, ...createDto } = dto;
     const newProduct = {
       id: '1',
@@ -138,7 +136,7 @@ describe('AuthService', () => {
     );
   });
 
-  it('shoulf find all products', async () => {
+  it('should find all products', async () => {
     const dto = {
       limit: 2,
       offset: 2,
@@ -188,6 +186,32 @@ describe('AuthService', () => {
         ...product,
         images: product.images.map((image) => image.url),
       })),
+    });
+  });
+
+  describe('findOne tests', () => {
+    it('should find product by uuid', async () => {
+      const id = '12345678-1234-1234-1234-1234567890ab';
+      const product = {
+        id: id,
+        name: 'Test Product',
+      } as Product;
+
+      jest.spyOn(productsRepository, 'findOne').mockResolvedValue(product);
+      const result = await service.findOne(id);
+
+      expect(result).toEqual(product);
+    });
+
+    it('should fail if uuid not found', async () => {
+      const id = '12345678-1234-1234-1234-1234567890ab';
+
+      jest.spyOn(productsRepository, 'findOne').mockResolvedValue(null);
+
+      const result = service.findOne(id);
+
+      await expect(result).rejects.toThrow(NotFoundException);
+      await expect(result).rejects.toThrow(`Product '${id}' not found`);
     });
   });
 });

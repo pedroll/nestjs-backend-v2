@@ -116,12 +116,12 @@ export class ProductsService {
    */
   async findOne(term: string) {
     let product: Product | null;
-    // Search by Product name
+    // Search by uuid or Product name
     if (isUUID(term)) {
       this.logger.log(`Product searching by ID: ${term}`);
       product = await this.productRepository.findOne({ where: { id: term } });
     } else {
-      this.logger.log(`Product searching by uuid, slug, name : ${term}`);
+      this.logger.log(`Product searching by slug, name : ${term}`);
       // product = await this.productRepository.findOne({
       //   where: [
       //     { name: term.trim() },
