@@ -16,12 +16,21 @@ describe('AuthService', () => {
   let productImageRepository: Repository<ProductImage>;
 
   beforeEach(async () => {
+    const mockQueryBuilder = {
+      where: jest.fn().mockReturnThis(), // valido tenemos alternativa
+      // where: jest.fn(() => mockQueryBuilder), // valido pero tenemos alternativa
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      getOne: jest.fn().mockReturnValue({
+        id: 'valid-uuid',
+        name: 'Test Product',
+      }),
+    };
     const mockProductRepository = {
       find: jest.fn().mockReturnValue([]),
       findOne: jest.fn().mockReturnValue(null),
       save: jest.fn().mockReturnValue({ id: 1 }),
       count: jest.fn().mockReturnValue(0),
-      createQueryBuilder: jest.fn().mockReturnValue({}),
+      createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
       delete: jest.fn().mockReturnValue({}),
       create: jest.fn().mockReturnValue({ id: 1 }),
     };
@@ -212,6 +221,16 @@ describe('AuthService', () => {
 
       await expect(result).rejects.toThrow(NotFoundException);
       await expect(result).rejects.toThrow(`Product '${id}' not found`);
+    });
+
+    it('should return product  name or slug', async () => {
+      const term = 'Test Product';
+
+      const result = await service.findOne(term);
+      expect(result).toEqual({
+        id: 'valid-uuid',
+        name: 'Test Product',
+      });
     });
   });
 });
