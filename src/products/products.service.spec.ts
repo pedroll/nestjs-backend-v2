@@ -33,6 +33,7 @@ describe('AuthService', () => {
       createQueryBuilder: jest.fn().mockReturnValue(mockQueryBuilder),
       delete: jest.fn().mockReturnValue({}),
       create: jest.fn().mockReturnValue({ id: 1 }),
+      preload: jest.fn().mockReturnValue(undefined),
     };
 
     const mockProductImageRepository = {
@@ -231,6 +232,43 @@ describe('AuthService', () => {
         id: 'valid-uuid',
         name: 'Test Product',
       });
+    });
+  });
+
+  describe('update tests', () => {
+    it('should throw NotFoundException if product not found', async () => {
+      const id = '';
+      const dto = {} as CreateProductDto;
+      const user = {} as User;
+
+      const result = service.update(id, dto, user);
+
+      await expect(result).rejects.toThrow(
+        new NotFoundException(`Product with id '${id}' not found`),
+      );
+    });
+
+    it('should update product successfully', async () => {
+      const id = 'abc';
+      const dto = {
+        name: 'Updated Test Product',
+        slug: 'updated-test-product',
+      } as CreateProductDto;
+      const user = {
+        id: '1',
+      } as User;
+      const product = {
+        id,
+        ...dto,
+        user,
+        images: [],
+      } as unknown as Product;
+
+      jest.spyOn(productsRepository, 'preload').mockResolvedValue(product);
+      jest.spyOn(productsRepository, 'save').mockResolvedValue(product);
+      const result = await service.update(id, dto, user);
+
+      expect(result).toEqual(product);
     });
   });
 });
