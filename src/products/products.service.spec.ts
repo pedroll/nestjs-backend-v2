@@ -15,6 +15,17 @@ describe('AuthService', () => {
   let productsRepository: Repository<Product>;
   let productImageRepository: Repository<ProductImage>;
 
+  let mockQueryRunner: {
+    connect: jest.Mock;
+    startTransaction: jest.Mock;
+    commitTransaction: jest.Mock;
+    rollbackTransaction: jest.Mock;
+    release: jest.Mock;
+    manager: {
+      delete: jest.Mock;
+      save: jest.Mock;
+    };
+  };
   beforeEach(async () => {
     const mockQueryBuilder = {
       where: jest.fn().mockReturnThis(), // valido tenemos alternativa
@@ -44,18 +55,20 @@ describe('AuthService', () => {
       get: jest.fn().mockReturnValue('test'),
     };
 
+    mockQueryRunner = {
+      connect: jest.fn(),
+      startTransaction: jest.fn(),
+      commitTransaction: jest.fn(),
+      rollbackTransaction: jest.fn(),
+      release: jest.fn(),
+      manager: {
+        delete: jest.fn(),
+        save: jest.fn(),
+      },
+    };
+
     const mockDataSource = {
-      createQueryRunner: jest.fn().mockReturnValue({
-        connect: jest.fn(),
-        startTransaction: jest.fn(),
-        commitTransaction: jest.fn(),
-        rollbackTransaction: jest.fn(),
-        release: jest.fn(),
-        manager: {
-          delete: jest.fn(),
-          save: jest.fn(),
-        },
-      }),
+      createQueryRunner: jest.fn().mockReturnValue(mockQueryRunner),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -128,7 +141,7 @@ describe('AuthService', () => {
     });
   });
 
-  it.todo('All others errors');
+  it.todo('All others errors in handleErrors');
 
   it('should throw if create fail', async () => {
     const dto = {} as CreateProductDto;
@@ -236,6 +249,22 @@ describe('AuthService', () => {
   });
 
   describe('update tests', () => {
+    const id = 'abc';
+    const dto = {
+      name: 'Updated Test Product',
+      slug: 'updated-test-product',
+      images: ['path/to/image1.jpg'],
+    } as CreateProductDto;
+    const user = {
+      id: '1',
+    } as User;
+    const product = {
+      id,
+      ...dto,
+      user,
+      images: ['path/to/image1.jpg'],
+    } as unknown as Product;
+
     it('should throw NotFoundException if product not found', async () => {
       const id = '';
       const dto = {} as CreateProductDto;
@@ -249,26 +278,23 @@ describe('AuthService', () => {
     });
 
     it('should update product successfully', async () => {
-      const id = 'abc';
-      const dto = {
-        name: 'Updated Test Product',
-        slug: 'updated-test-product',
-      } as CreateProductDto;
-      const user = {
-        id: '1',
-      } as User;
-      const product = {
-        id,
-        ...dto,
-        user,
-        images: [],
-      } as unknown as Product;
-
       jest.spyOn(productsRepository, 'preload').mockResolvedValue(product);
-      jest.spyOn(productsRepository, 'save').mockResolvedValue(product);
       const result = await service.update(id, dto, user);
 
       expect(result).toEqual(product);
     });
+
+    it('should update product and commit transaction', async () => {
+      jest.spyOn(productsRepository, 'preload').mockResolvedValue(product);
+      await service.update(id, dto, user);
+
+      expect(mockQueryRunner.connect).toHaveBeenCalled();
+      expect(mockQueryRunner.startTransaction).toHaveBeenCalled();
+      expect(mockQueryRunner.manager.delete).toHaveBeenCalled();
+      expect(mockQueryRunner.commitTransaction).toHaveBeenCalled();
+      expect(mockQueryRunner.release).toHaveBeenCalled();
+    });
+
+    it.todo('errors in transaction');
   });
 });
