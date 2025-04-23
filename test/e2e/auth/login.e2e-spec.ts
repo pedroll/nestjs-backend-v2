@@ -3,9 +3,11 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { App } from 'supertest/types';
 import { AppModule } from '../../../src/app.module';
+import { LoginUserDto } from '../../../src/auth/dto';
 
 interface ResponseBody {
   message?: string[];
+  error?: string;
   statusCode?: number;
 }
 
@@ -51,17 +53,77 @@ describe('Login (e2e)', () => {
       'password must be a string',
     ];
 
-    const response = await request(app.getHttpServer())
-      .post('/auth/login')
-      .expect(400);
+    const response = await request(app.getHttpServer()).post('/auth/login');
 
     const body = response.body as ResponseBody;
 
-    console.log(response.body);
-    //return request(app.getHttpServer()).get('/').expect(404);
+    // console.log(response.body);
+
     expect(response.status).toBe(400);
     errorMessages.forEach((error) => {
       expect(body.message).toContain(error);
+    });
+  });
+
+  it('/auth/login (POST) - wrong credentials email', async () => {
+    const dto = {
+      email: 'wrongemail@example.com',
+      password: 'Wrongpassword1!',
+    } as LoginUserDto;
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send(dto);
+    const body = response.body as ResponseBody;
+
+    expect(response.status).toBe(401);
+    expect(body).toEqual({
+      message: 'Invalid credentials email',
+      error: 'Unauthorized',
+      statusCode: 401,
+    });
+  });
+
+  it('/auth/login (POST) - wrong credentials password', async () => {
+    const dto = {
+      email: 'pedro@gmail.com',
+      password: 'Wrongpassword1!',
+    } as LoginUserDto;
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send(dto);
+    const body = response.body as ResponseBody;
+
+    expect(response.status).toBe(401);
+    expect(body).toEqual({
+      message: 'Invalid credentials password',
+      error: 'Unauthorized',
+      statusCode: 401,
+    });
+  });
+
+  it('/auth/login (POST) - valid credentials', async () => {
+    const dto = {
+      email: 'pedro@gmail.com',
+      password: '123456Aa$',
+    } as LoginUserDto;
+
+    const response = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send(dto);
+    const body = response.body as ResponseBody;
+
+    expect(response.status).toBe(201);
+    expect(body).toEqual({
+      user: {
+        id: expect.any(String) as string,
+        email: 'pedro@gmail.com',
+        fullName: 'pedro',
+        isActive: true,
+        roles: ['user'],
+      },
+      token: expect.any(String) as string,
     });
   });
 });
