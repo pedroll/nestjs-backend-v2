@@ -5,7 +5,7 @@ const logger = new Logger('ImageFileFilter');
 export const imageFileFilter = (
   req: Express.Request,
   file: Express.Multer.File,
-  callback: Function,
+  callback: (error: Error | null, acceptFile: boolean) => void,
 ) => {
   if (!file) return callback(new Error('there is no file'), false);
   if (!file.mimetype.includes('image')) {
