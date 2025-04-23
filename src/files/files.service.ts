@@ -23,7 +23,7 @@ export class FilesService {
 
   getProductImage(imageName: string): string {
     const path = join(__dirname, '../../../static/uploads/products', imageName); // path fisico fuera del serve static de nest
-    console.log(__dirname);
+
     if (!existsSync(path))
       throw new BadRequestException(
         `Not product found with image ${imageName}`,
