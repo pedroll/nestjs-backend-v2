@@ -35,4 +35,6 @@ describe('FilesController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('should return file path when getProductImage is called', async () => {});
 });
