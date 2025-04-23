@@ -3,11 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { FilesService } from './files.service';
 import { ConfigService } from '@nestjs/config';
 import { Response } from 'express';
+import { BadRequestException } from '@nestjs/common';
 
 describe('FilesController', () => {
   let controller: FilesController;
   let filesService: FilesService;
-  let mockResponse: Response;
+
   beforeEach(async () => {
     const mockFilesService = {
       getProductImage: jest.fn(),
@@ -51,5 +52,26 @@ describe('FilesController', () => {
 
     expect(mockResponse.sendFile).toHaveBeenCalled();
     expect(mockResponse.sendFile).toHaveBeenCalledWith(filePath);
+  });
+
+  it('should return secureUr when upload image is called with a file', () => {
+    const file = {
+      file: 'test-image.jpg',
+      filename: 'testImageName.jpg',
+    } as unknown as Express.Multer.File;
+
+    const result = controller.uploadFile(file);
+
+    expect(result).toEqual({
+      secureUrl: 'http://localhost:3000/files/product/testImageName.jpg',
+      fileName: 'testImageName.jpg',
+    });
+  });
+
+  it('should should throw error if no file', () => {
+    // @ts-expect-error for testing
+    expect(() => controller.uploadFile(null)).toThrow(
+      new BadRequestException('Make sure that the file is an image'),
+    );
   });
 });
