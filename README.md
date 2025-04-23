@@ -29,7 +29,7 @@ Caracteristicas no incluidas en el curso:
 
 * [x] Eslint Rules NestJs Jest
 * [x] Unit tests COV 80% - using various styles for document
-* [ ] e2e tests
+* [ ] e2e tests COV 72%
 * [ ] Graphql
 * [ ] Typed responses
 * [ ] Shared library with responses para monorepo
