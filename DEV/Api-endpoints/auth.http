@@ -22,6 +22,9 @@ Content-Type: application/json
   "password": "123456aA$"
 }
 
+### POST Login user 400 BadRequest
+POST {{ apiUrl }}/auth/login
+
 ### POST Login user
 POST {{ apiUrl }}/auth/login
 Content-Type: application/json
