@@ -33,7 +33,7 @@ export class FilesController {
     description: 'The image file has been successfully retrieved.',
   })
   @ApiResponse({ status: 404, description: 'Image not found' })
-  getProductImage(
+  findProductImage(
     @Res() res: Response, // hacemos override de la response de nest para servir la image en lugar del absolute path
     @Param('imageName') imageName: string,
   ): void {
