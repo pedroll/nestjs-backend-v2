@@ -1,9 +1,14 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { Test, TestingModule } from '@nestjs/testing';
+
+import { Repository } from 'typeorm';
 import * as request from 'supertest';
 import { App } from 'supertest/types';
+
 import { AppModule } from '../../../src/app.module';
-import { LoginUserDto } from '../../../src/auth/dto';
+import { CreateUserDto, LoginUserDto } from '../../../src/auth/dto';
+import { User } from '../../../src/auth/entities/user.entity';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 interface ResponseBody {
   message?: string[];
@@ -11,10 +16,23 @@ interface ResponseBody {
   statusCode?: number;
 }
 
+const testingUser = {
+  email: 'testing.user@gmail.com',
+  password: '123456Aa$',
+  fullName: 'Testing User',
+} as CreateUserDto;
+
+const testingAdminUser = {
+  email: 'testing.admin@gmail.com',
+  password: '123456Aa$',
+  fullName: 'Testing Admin',
+} as CreateUserDto;
+
 describe('Login (e2e)', () => {
   let app: INestApplication<App>;
+  let userRepository: Repository<User>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -34,9 +52,25 @@ describe('Login (e2e)', () => {
     );
 
     await app.init();
+
+    await request(app.getHttpServer()).post('/auth/register').send(testingUser);
+    await request(app.getHttpServer())
+      .post('/auth/register')
+      .send(testingAdminUser);
+
+    // add testing users
+    userRepository = app.get<Repository<User>>(getRepositoryToken(User));
+    await userRepository.update(
+      { email: testingAdminUser.email },
+      { roles: ['admin'] },
+    );
   });
 
   afterAll(async () => {
+    // delete testing users
+    await userRepository.delete({ email: testingUser.email });
+    await userRepository.delete({ email: testingAdminUser.email });
+
     await app.close();
   });
 
@@ -68,7 +102,7 @@ describe('Login (e2e)', () => {
   it('/auth/login (POST) - wrong credentials email', async () => {
     const dto = {
       email: 'wrongemail@example.com',
-      password: 'Wrongpassword1!',
+      password: testingUser.password,
     } as LoginUserDto;
 
     const response = await request(app.getHttpServer())
@@ -86,7 +120,7 @@ describe('Login (e2e)', () => {
 
   it('/auth/login (POST) - wrong credentials password', async () => {
     const dto = {
-      email: 'pedro@gmail.com',
+      email: testingUser.email,
       password: 'Wrongpassword1!',
     } as LoginUserDto;
 
@@ -105,8 +139,8 @@ describe('Login (e2e)', () => {
 
   it('/auth/login (POST) - valid credentials', async () => {
     const dto = {
-      email: 'pedro@gmail.com',
-      password: '123456Aa$',
+      email: testingUser.email,
+      password: testingUser.password,
     } as LoginUserDto;
 
     const response = await request(app.getHttpServer())
@@ -118,8 +152,8 @@ describe('Login (e2e)', () => {
     expect(body).toEqual({
       user: {
         id: expect.any(String) as string,
-        email: 'pedro@gmail.com',
-        fullName: 'pedro',
+        email: testingUser.email,
+        fullName: testingUser.fullName,
         isActive: true,
         roles: ['user'],
       },
