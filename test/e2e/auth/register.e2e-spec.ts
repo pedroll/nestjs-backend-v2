@@ -1,5 +1,6 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { Repository } from 'typeorm';
 import * as request from 'supertest';
@@ -8,7 +9,6 @@ import { App } from 'supertest/types';
 import { AppModule } from '../../../src/app.module';
 import { CreateUserDto } from '../../../src/auth/dto';
 import { User } from '../../../src/auth/entities/user.entity';
-import { getRepositoryToken } from '@nestjs/typeorm';
 
 interface ResponseBody {
   message?: string[];
