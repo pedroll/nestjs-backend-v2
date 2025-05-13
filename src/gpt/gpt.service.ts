@@ -5,6 +5,6 @@ import { orthographyUseCase } from './use-case';
 @Injectable()
 export class GptService {
   async orthographyCheck(orthographyDto: OrthographyDto) {
-    await orthographyUseCase();
+    return await orthographyUseCase(orthographyDto);
   }
 }

@@ -1,5 +1,12 @@
-export const orthographyUseCase = async () => {
+interface Options {
+  prompt: string;
+  maxTokens?: number;
+}
+
+export const orthographyUseCase = async (options: Options) => {
+  const { prompt } = options;
+  console.log({ prompt });
   return {
-    hola: 'desde use case',
+    prompt,
   };
 };
