@@ -1,0 +1,28 @@
+{
+  "framework": "nestjs",
+  "language": "typescript",
+  "files": {
+    "include": [
+      "src/**/*.ts",
+      "test/**/*.ts",
+      "nest-cli.json",
+      "tsconfig.json",
+      "package.json"
+    ],
+    "exclude": [
+      "node_modules/**",
+      "dist/**",
+      "**/*.js.map",
+      "**/*.d.ts"
+    ]
+  },
+  "linter": "eslint",
+  "formatter": "prettier",
+  "editor": {
+    "tabSize": 2,
+    "formatOnSave": true,
+    "formatOnPaste": true
+  },
+  "generateTests": true,
+  "contextType": "auto"
+}
