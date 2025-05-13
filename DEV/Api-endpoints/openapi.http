@@ -3,8 +3,8 @@ POST {{ apiUrl }}/gpt/orthography-check
 Content-Type: application/json
 
 {
-  "maxTokens": 2000,
-  "prompt": "Hello"
+  "maxTokens": 200,
+  "prompt": "¿Me puedes decir lá temperatura del sol?"
 }
 
 ### POST create products malformed payload
