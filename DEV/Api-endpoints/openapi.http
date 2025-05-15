@@ -7,6 +7,14 @@ Content-Type: application/json
   "prompt": "¿Me puedes decir lá temperatura del sol?"
 }
 
+### POST pros-cons-discusser
+POST {{ apiUrl }}/gpt/pros-cons-discusser
+Content-Type: application/json
+
+{
+  "prompt": "¿Puedes comparar entre un carro o una moto?"
+}
+
 ### POST create products malformed payload
 POST {{ apiUrl }}/products
 Content-Type: application/json
