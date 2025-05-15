@@ -15,29 +15,11 @@ Content-Type: application/json
   "prompt": "¿Puedes comparar entre un carro o una moto?"
 }
 
-### POST create products malformed payload
-POST {{ apiUrl }}/products
+
+### POST pros-cons-discusser-stream
+POST {{ apiUrl }}/gpt/pros-cons-discusser
 Content-Type: application/json
 
 {
-  "brand": "Ford",
-  "model": 1,
-  "unknownField": "unknown"
+  "prompt": "¿Puedes comparar entre un carro o una moto?"
 }
-
-### Patch update products
-PATCH {{ apiUrl }}/products/6758a61c-b6d5-4b7b-8776-d230058576b6
-Content-Type: application/json
-
-{
-  "name": "Pedro's product99",
-  "price": 110.99,
-  "images": [
-    "image99"
-  ]
-}
-
-### DELETE products
-DELETE {{ apiUrl }}/products/{{productId}}
-Authorization: Bearer {{token}}
-
