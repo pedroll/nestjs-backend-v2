@@ -35,7 +35,7 @@ export class GptController {
         // console.log(piece);
         res.write(piece);
       }
-      res.end();
     }
+    res.end();
   }
 }

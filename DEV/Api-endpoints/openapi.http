@@ -17,7 +17,7 @@ Content-Type: application/json
 
 
 ### POST pros-cons-discusser-stream
-POST {{ apiUrl }}/gpt/pros-cons-discusser
+POST {{ apiUrl }}/gpt/pros-cons-discusser-stream
 Content-Type: application/json
 
 {
