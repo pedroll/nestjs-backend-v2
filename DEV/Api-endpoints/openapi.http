@@ -31,3 +31,13 @@ Content-Type: application/json
   "prompt": "¿Puedes comparar entre un carro o una moto?",
   "lang": "Árabe"
 }
+
+### POST Text to audio
+POST {{ apiUrl }}/gpt/text-to-audio
+Content-Type: application/json
+
+{
+  "prompt": "¿Puedes comparar entre un carro o una moto?",
+  "lang": "Árabe",
+  "voice": "nova"
+}

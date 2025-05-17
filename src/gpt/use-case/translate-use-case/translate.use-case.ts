@@ -21,7 +21,7 @@ export const translateUseCase = async (
           tienes que traducirlo al idioma ${lang} y devolverlo en formato Markdown.
                    
           Ejemplo de salida:
-          #Texto traducido al idioma ${lang}:
+          ##exto traducido al idioma ${lang}:
           
            - <texto traducido>
           `,

@@ -10,7 +10,12 @@ import { Response } from 'express';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { GptService } from './gpt.service';
-import { OrthographyDto, ProsConsDiscusserDto, TranslateDto } from './dto';
+import {
+  OrthographyDto,
+  ProsConsDiscusserDto,
+  TextToAudioDto,
+  TranslateDto,
+} from './dto';
 
 @ApiTags('GPT')
 @Controller('gpt')
@@ -67,5 +72,13 @@ export class GptController {
   @ApiResponse({ status: 200, description: 'Texto traducido correctamente' })
   translate(@Body() translateDto: TranslateDto) {
     return this.gptService.translate(translateDto);
+  }
+
+  @Post('text-to-audio')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Text to audio' })
+  @ApiResponse({ status: 200, description: 'Audio generado correctamente' })
+  textToAudio(@Body() textToAudioDto: TextToAudioDto) {
+    return this.gptService.textToAudio(textToAudioDto);
   }
 }
