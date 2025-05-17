@@ -37,7 +37,6 @@ POST {{ apiUrl }}/gpt/text-to-audio
 Content-Type: application/json
 
 {
-  "prompt": "¿Puedes comparar entre un carro o una moto?",
-  "lang": "Árabe",
+  "prompt": "La ciencia encuentra la clave de la longevidad en el ejercicio físico: ¿moverse más tiempo o con más intensidad?",
   "voice": "nova"
 }

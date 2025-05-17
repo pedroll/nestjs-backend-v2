@@ -1,5 +1,7 @@
 import OpenAI from 'openai';
 import { TextToAudioDto } from '../../dto';
+import * as path from 'node:path';
+import * as fs from 'node:fs';
 
 interface Options {
   prompt: string;
@@ -18,32 +20,30 @@ export const textToAudioUseCase = async (
     fable: 'fable',
     onyx: 'onyx',
     shimmer: 'shimmer',
+    ash: 'ash',
+    ballad: 'ballad',
+    coral: 'coral',
+    sage: 'sage',
+    verse: 'verse',
   };
   const selectedVoice: string = voices[voice ?? 'nova'] as string;
 
+  const storagePath = path.resolve(
+    __dirname,
+    '../../../../generated/audio/USERID',
+  );
+  const speechFile = path.join(storagePath, `${Date.now()}.mp3`);
+  fs.mkdirSync(storagePath, { recursive: true });
+
   const response = await openAi.audio.speech.create({
-    model: 'gpt-4.1-mini-ts',
+    model: 'tts-1',
     voice: selectedVoice,
     input: prompt,
-    //   [
-    //   {
-    //     role: 'system',
-    //     content: `Te serán  proveídos textos en un idioma que tienes que identificar,
-    //       tienes que traducirlo al idioma ${lang} y devolverlo en formato Markdown.
-    //
-    //       Ejemplo de salida:
-    //       ##exto traducido al idioma ${lang}:
-    //
-    //        - <texto traducido>
-    //       `,
-    //   },
-    //   {
-    //     role: 'user',
-    //     content: prompt,
-    //
-    //   },
-    // ],
+    response_format: 'mp3',
   });
   console.log(response);
-  return { message: response.output_text, info: response };
+  const buffer = Buffer.from(await response.arrayBuffer());
+  fs.writeFileSync(speechFile, buffer);
+
+  return speechFile;
 };
