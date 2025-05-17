@@ -15,11 +15,19 @@ Content-Type: application/json
   "prompt": "¿Puedes comparar entre un carro o una moto?"
 }
 
-
 ### POST pros-cons-discusser-stream
 POST {{ apiUrl }}/gpt/pros-cons-discusser-stream
 Content-Type: application/json
 
 {
   "prompt": "¿Puedes comparar entre un carro o una moto?"
+}
+
+### POST translate
+POST {{ apiUrl }}/gpt/translate
+Content-Type: application/json
+
+{
+  "prompt": "¿Puedes comparar entre un carro o una moto?",
+  "lang": "Árabe"
 }
