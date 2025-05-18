@@ -40,3 +40,7 @@ Content-Type: application/json
   "prompt": "La ciencia encuentra la clave de la longevidad en el ejercicio físico: ¿moverse más tiempo o con más intensidad?",
   "voice": "nova"
 }
+
+### GET Text to audio
+GET {{ apiUrl }}/gpt/text-to-audio/1747517358959
+
