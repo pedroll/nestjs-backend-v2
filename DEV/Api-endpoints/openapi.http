@@ -44,3 +44,19 @@ Content-Type: application/json
 ### GET Text to audio
 GET {{ apiUrl }}/gpt/text-to-audio/1747517358959
 
+### Audio to text
+POST http://localhost:3000/api/v1/gpt/audio-to-text
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="prompt"
+
+"holamundo"
+--WebAppBoundary
+Content-Disposition: form-data; name="audio"; filename="El-parque.m4a""
+
+< ./El-parque.m4a
+--WebAppBoundary--
+
+###
+
