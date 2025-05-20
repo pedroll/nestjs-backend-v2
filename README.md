@@ -30,7 +30,14 @@ Caracteristicas no incluidas en el curso:
 * [x] Eslint Rules NestJs Jest
 * [x] Unit tests COV 80% - using various styles for document
 * [ ] e2e tests COV 72%
-* [ ] OpenAi WIP (consume/serve openai endpoints)
+* [x] OpenAi WIP (consume/serve openai endpoints)
+    * Orthography check
+    * Pros / Cons compare
+    * Pros / Consns Stream Response
+    * Text to audio, Speech
+    * Translate
+    * Audio to text, Transcribe subtitles
+    * ...
 * [ ] Graphql
 * [ ] Typed responses
 * [ ] Shared library with responses para monorepo
