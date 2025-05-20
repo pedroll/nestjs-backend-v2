@@ -142,6 +142,7 @@ export class GptController {
       }),
     )
     audio: Express.Multer.File,
+    prompt?: string,
   ) {
     if (!audio) {
       throw new BadRequestException('No file uploaded');
@@ -152,13 +153,10 @@ export class GptController {
       'audio/wav',
       'audio/m4a',
     ];
+    console.log(audio.mimetype);
     if (!allowedFileTypes.includes(audio.mimetype)) {
       throw new BadRequestException('Invalid file type');
     }
-    // const filePath = await this.gptService.textToAudio(textToAudioDto);
-    //
-    // res.setHeader('Content-Type', 'audio/mp3');
-    // res.sendFile(filePath);
-    return 'audio-to-text';
+    return await this.gptService.audioToText({ audio, prompt });
   }
 }
