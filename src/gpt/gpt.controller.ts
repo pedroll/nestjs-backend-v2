@@ -152,6 +152,7 @@ export class GptController {
       'audio/mp3',
       'audio/wav',
       'audio/m4a',
+      'audio/x-m4a',
     ];
     console.log(audio.mimetype);
     console.log({ prompt });
