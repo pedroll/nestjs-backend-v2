@@ -51,7 +51,7 @@ Content-Type: multipart/form-data; boundary=WebAppBoundary
 --WebAppBoundary
 Content-Disposition: form-data; name="prompt"
 
-"holamundo"
+"Manten todos los signos de puntuación, interjecciones y onomatopeyas"
 --WebAppBoundary
 Content-Disposition: form-data; name="audio"; filename="El-parque.m4a"
 Content-Type: audio/m4a

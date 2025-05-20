@@ -142,7 +142,7 @@ export class GptController {
       }),
     )
     audio: Express.Multer.File,
-    prompt?: string,
+    @Body('prompt') prompt?: string,
   ) {
     if (!audio) {
       throw new BadRequestException('No file uploaded');
@@ -154,6 +154,7 @@ export class GptController {
       'audio/m4a',
     ];
     console.log(audio.mimetype);
+    console.log({ prompt });
     if (!allowedFileTypes.includes(audio.mimetype)) {
       throw new BadRequestException('Invalid file type');
     }
