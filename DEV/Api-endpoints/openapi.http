@@ -59,4 +59,36 @@ Content-Type: audio/m4a
 < ./El-parque.m4a
 --WebAppBoundary--
 
-###
+
+### GET image-generation
+GET {{ apiUrl }}/gpt/image-generation
+
+### POSTimage-generation
+POST http://localhost:3000/api/v1/gpt/image-generation
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="prompt"
+
+"Necesito una imagen de un personaje de dibujos animados"
+
+--WebAppBoundary--
+
+#--WebAppBoundary
+#Content-Disposition: form-data; name="audio"; filename="El-parque.m4a"
+#Content-Type: audio/m4a
+#
+#< ./El-parque.m4a
+
+
+# curl --location 'http://localhost:3000/api/v1/gpt/image-generation'
+#--header 'Content-Type: application/x-www-form-urlencoded'
+#--data-urlencode 'prompt=Necesito una imagen de un personaje anime'
+### POSTimage-generation
+POST http://localhost:3000/api/v1/gpt/image-generation
+Content-Type: application/x-www-form-urlencoded
+
+prompt = "Necesito una imagen de un personaje anime, que tenga un sombrero raro y que sea todo muy mecha"
+
+##
+

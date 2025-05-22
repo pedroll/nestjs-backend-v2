@@ -18,6 +18,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { GptService } from './gpt.service';
 import {
+  ImageGenerationDto,
   OrthographyDto,
   ProsConsDiscusserDto,
   TextToAudioDto,
@@ -154,11 +155,17 @@ export class GptController {
       'audio/m4a',
       'audio/x-m4a',
     ];
-    console.log(audio.mimetype);
-    console.log({ prompt });
     if (!allowedFileTypes.includes(audio.mimetype)) {
       throw new BadRequestException('Invalid file type');
     }
     return await this.gptService.audioToText({ audio, prompt });
+  }
+
+  @Post('image-generation')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Generate/modify images' })
+  @ApiResponse({ status: 200, description: 'Image generated' })
+  imageGeneration(@Body() imageGenerationDto: ImageGenerationDto) {
+    return this.gptService.imageGeneration(imageGenerationDto);
   }
 }
