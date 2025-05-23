@@ -49,7 +49,7 @@ export class GptController {
   @ApiOperation({ summary: 'Discusión de pros y contras' })
   @ApiResponse({ status: 200, description: 'Discusión generada correctamente' })
   prosConsDicusser(@Body() prosConsDiscusserDto: ProsConsDiscusserDto) {
-    return this.gptService.prosConsDicusser(prosConsDiscusserDto);
+    return this.gptService.prosConsDiscusser(prosConsDiscusserDto);
   }
 
   @Post('pros-cons-discusser-stream')
@@ -64,7 +64,7 @@ export class GptController {
     @Res() res: Response,
   ) {
     const stream =
-      await this.gptService.prosConsDicusserStream(prosConsDiscusserDto);
+      await this.gptService.prosConsDiscusserStream(prosConsDiscusserDto);
 
     res.setHeader('Content-Type', 'application/stream+json');
     res.status(HttpStatus.OK);
@@ -102,9 +102,8 @@ export class GptController {
   @Get('text-to-audio/:fileName')
   @ApiOperation({ summary: 'Download Audio to text file' })
   @ApiResponse({ status: 200, description: 'Text to audio File downloaded' })
-  getAudiotoText(@Param('fileName') fileName: string, @Res() res: Response) {
-    const filePath = this.gptService.getTextToAudio(fileName);
-
+  getAudioToText(@Param('fileName') fileName: string, @Res() res: Response) {
+    const filePath = this.gptService.getFilePath(fileName, 'audio');
     res.setHeader('Content-Type', 'audio/mp3');
     res.sendFile(filePath);
   }
@@ -167,5 +166,17 @@ export class GptController {
   @ApiResponse({ status: 200, description: 'Image generated' })
   imageGeneration(@Body() imageGenerationDto: ImageGenerationDto) {
     return this.gptService.imageGeneration(imageGenerationDto);
+  }
+
+  @Get('image-generation/:fileName')
+  @ApiOperation({ summary: 'Download Image to text file' })
+  @ApiResponse({ status: 200, description: 'Image File downloaded' })
+  getImageGeneration(
+    @Param('fileName') fileName: string,
+    @Res() res: Response,
+  ) {
+    const filePath = this.gptService.getFilePath(fileName, 'image');
+    res.setHeader('Content-Type', 'image/png');
+    res.sendFile(filePath);
   }
 }
