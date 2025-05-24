@@ -88,7 +88,8 @@ Content-Disposition: form-data; name="prompt"
 POST http://localhost:3000/api/v1/gpt/image-generation
 Content-Type: application/x-www-form-urlencoded
 
-prompt = "Necesito una imagen de un personaje anime, que tenga un sombrero raro y que sea todo muy mecha"
+#prompt = "Necesito una imagen de un personaje anime, que tenga un sombrero raro y que sea todo muy mecha"
+prompt = "Necesito una imagen de una ciudad estilo manga, de dia con muchos coches y personas transitando por ella, todos ellos estilo manga, que sea en color y las caras tengan detalles de manga"
 
 ##
 
