@@ -2,19 +2,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as sharp from 'sharp';
 import { InternalServerErrorException } from '@nestjs/common';
-import { ImageGenerateParams, ImagesResponse } from 'openai/resources/images';
+import { ImageGenerateParams } from 'openai/resources';
 
-/**
- * Configuration options for GPT image generation
- * @property {string} model - The model to use for image generation
- * @property {string} prompt - The text prompt for image generation
- * @property {string} quality - Quality of the generated image
- * @property {number} n - Number of images to generate
- * @property {string} size - Dimensions of the generated image
- * @property {string} [background] - Background style for the image
- * @property {string} [output_format] - Format of the output image
- * @property {string} [response_format] - Format of the API response
- */
+type ImageType = 'b64' | 'url' | 'fileName';
 
 /**
  * Default configuration for GPT image generation with transparent background
@@ -108,52 +98,61 @@ export const downloadBase64ImageAsPng = async (
 };
 
 /**
- * Saves an image from OpenAI's API response to the filesystem
- * @param {ImagesResponse} response - The response from OpenAI's image generation API
- * @returns {Promise<{openaiUrl: string | null, localPath: string, revisedPrompt: string | undefined}>} Object containing URL, local path, and revised prompt
+ * Saves an image from OpenAI's API Image to the filesystem
+ * @param {ImagesResponse} Image - The Image from OpenAI's image generation API
+ * @param fullPath
+ * @returns {Promise<{openaiUrl: string | null, localImagePath: string, revisedPrompt: string | undefined}>} Object containing URL, local path, and revised prompt
  * @throws {InternalServerErrorException} If the image download fails
  */
 export const saveImageToFs = async (
-  response: ImagesResponse,
-): Promise<{
-  openaiUrl?: string | null;
-  localPath: string;
-  revisedPrompt?: string | undefined;
-}> => {
-  // Initialize variables for image data
-  let image_bytes: Buffer | null = null;
-
+  inputImage: string,
+  imageType: ImageType = 'fileName',
+  fullPath = false,
+): Promise<string> => {
   // Create the directory if it doesn't exist
   const storageDir = path.resolve('./', './generated/image/USERID');
   fs.mkdirSync(storageDir, { recursive: true });
 
+  // Initialize variables for image data
+  let imageNamePng = '';
+  let image_bytes: Buffer;
+  let remoteImage: Response;
+  let base64Image: string;
+
+  switch (imageType) {
+    case 'fileName':
+      imageNamePng = inputImage;
+      image_bytes = fs.readFileSync(inputImage);
+      break;
+    case 'url':
+      // Handle URL-based image
+      imageNamePng = `${Date.now()}.png`;
+
+      remoteImage = await fetch(inputImage);
+      if (!remoteImage.ok) {
+        throw new InternalServerErrorException(
+          'Download image was not possible',
+        );
+      }
+      image_bytes = Buffer.from(await remoteImage.arrayBuffer());
+      break;
+    case 'b64':
+      // Handle base64 encoded image
+      imageNamePng = `${Date.now()}-64.png`;
+
+      base64Image = inputImage.split(';base64,').pop()!;
+      image_bytes = Buffer.from(base64Image, 'base64');
+      break;
+    default:
+      throw new InternalServerErrorException('Invalid image type');
+  }
+
   // Create a unique filename for the image
-  const imageFile = path.join(storageDir, `${Date.now()}.png`);
+  const imageFilePath = path.join(storageDir, imageNamePng);
 
-  // Handle base64 encoded image
-  if (response.data?.[0]?.b64_json) {
-    image_bytes = Buffer.from(response.data[0].b64_json, 'base64');
+  if (imageType !== 'fileName') {
+    await sharp(image_bytes).png().ensureAlpha().toFile(imageFilePath);
   }
-  // Handle URL-based image
-  else if (response.data?.[0]?.url) {
-    const remoteImage = await fetch(response.data[0].url);
-    if (!remoteImage.ok) {
-      throw new InternalServerErrorException('Download image was not possible');
-    }
-    image_bytes = Buffer.from(await remoteImage.arrayBuffer());
-  } else {
-    throw new InternalServerErrorException(
-      'No valid image data found in the response',
-    );
-  }
-  // Debug logging can be uncommented if needed
-  // console.log({ imageFile });
-  // Process and save the image directly to the target file
-  await sharp(image_bytes).png().ensureAlpha().toFile(imageFile);
 
-  return {
-    openaiUrl: response.data[0].url,
-    localPath: imageFile,
-    revisedPrompt: response.data[0].revised_prompt,
-  };
+  return fullPath ? imageFilePath : imageNamePng;
 };
