@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import * as bodyParser from 'body-parser';
 
 const corsOptions: CorsOptions = {
   origin: ['http://localhost:4200'], // Allow requests from Angular frontend
@@ -39,6 +40,19 @@ export async function bootstrap() {
 
   app.enableCors(corsOptions);
   //app.enableCors(options);
+
+  // increse the limit of the payload
+  app.use(
+    bodyParser.json({
+      limit: '5mb',
+    }),
+  );
+  app.use(
+    bodyParser.urlencoded({
+      limit: '5mb',
+      extended: true,
+    }),
+  );
 
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
