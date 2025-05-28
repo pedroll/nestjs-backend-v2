@@ -19,6 +19,7 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GptService } from './gpt.service';
 import {
   ImageGenerationDto,
+  ImageVariationDto,
   OrthographyDto,
   ProsConsDiscusserDto,
   TextToAudioDto,
@@ -178,5 +179,13 @@ export class GptController {
     const filePath = this.gptService.getFilePath(fileName, 'image');
     res.setHeader('Content-Type', 'image/png');
     res.sendFile(filePath);
+  }
+
+  @Post('image-variation')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Generate images variants' })
+  @ApiResponse({ status: 200, description: 'Image variant generated' })
+  imageVariation(@Body() imageVariationDto: ImageVariationDto) {
+    return this.gptService.imageVariation(imageVariationDto);
   }
 }

@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import {
   AudioToTextDto,
   ImageGenerationDto,
+  ImageVariationDto,
   OrthographyDto,
   ProsConsDiscusserDto,
   TextToAudioDto,
@@ -14,6 +15,7 @@ import {
 import {
   audioToTextUseCase,
   imageGenerationUseCase,
+  imageVariationUseCase,
   orthographyUseCase,
   prosConsDicusserStreamUseCase,
   prosConsDicusserUseCase,
@@ -87,5 +89,9 @@ export class GptService {
     }
 
     return storagePath;
+  }
+
+  async imageVariation({ baseImage }: ImageVariationDto) {
+    return await imageVariationUseCase(this.openAi, { baseImage });
   }
 }

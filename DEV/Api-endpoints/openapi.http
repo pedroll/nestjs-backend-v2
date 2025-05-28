@@ -45,7 +45,7 @@ Content-Type: application/json
 GET {{ apiUrl }}/gpt/text-to-audio/1747517358959
 
 ### Audio to text
-POST http://localhost:3000/api/v1/gpt/audio-to-text
+POST {{ apiUrl }}/gpt/audio-to-text
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
@@ -64,7 +64,7 @@ Content-Type: audio/m4a
 GET {{ apiUrl }}/gpt/image-generation/1747860710760
 
 ### POST image-generation
-POST http://localhost:3000/api/v1/gpt/image-generation
+POST {{ apiUrl }}/gpt/image-generation
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
@@ -81,15 +81,20 @@ Content-Disposition: form-data; name="prompt"
 #< ./El-parque.m4a
 
 
-# curl --location 'http://localhost:3000/api/v1/gpt/image-generation'
+# curl --location '{{ apiUrl }}/gpt/image-generation'
 #--header 'Content-Type: application/x-www-form-urlencoded'
 #--data-urlencode 'prompt=Necesito una imagen de un personaje anime'
 ### POSTimage-generation
-POST http://localhost:3000/api/v1/gpt/image-generation
+POST {{ apiUrl }}/gpt/image-generation
 Content-Type: application/x-www-form-urlencoded
 
-#prompt = "Necesito una imagen de un personaje anime, que tenga un sombrero raro y que sea todo muy mecha"
 prompt = "Necesito una imagen de una ciudad estilo manga, de dia con coches y personas transitando por ella, algunas personas deben estar en primer plano y verse la cara con claridad, estar lo suficientemente cerca para que su figura ocupe 1/4 de la imagen,, todos ellos estilo manga, que sea en color y las caras tengan detalles de manga, el estilo manga debe estra inspirado en la serie GragonBall"
 
-##
 
+### Post Image variation
+POST {{ apiUrl }}/gpt/image-variation
+Content-Type: application/json
+
+{
+"baseImage": "{{ apiUrl }}/gpt/image-generation/1748343118376"
+}
