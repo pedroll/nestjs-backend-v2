@@ -89,7 +89,7 @@ POST http://localhost:3000/api/v1/gpt/image-generation
 Content-Type: application/x-www-form-urlencoded
 
 #prompt = "Necesito una imagen de un personaje anime, que tenga un sombrero raro y que sea todo muy mecha"
-prompt = "Necesito una imagen de una ciudad estilo manga, de dia con muchos coches y personas transitando por ella, todos ellos estilo manga, que sea en color y las caras tengan detalles de manga"
+prompt = "Necesito una imagen de una ciudad estilo manga, de dia con coches y personas transitando por ella, algunas personas deben estar en primer plano y verse la cara con claridad, estar lo suficientemente cerca para que su figura ocupe 1/4 de la imagen,, todos ellos estilo manga, que sea en color y las caras tengan detalles de manga, el estilo manga debe estra inspirado en la serie GragonBall"
 
 ##
 

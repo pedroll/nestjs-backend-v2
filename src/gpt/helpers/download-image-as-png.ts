@@ -7,39 +7,37 @@ import { ImageGenerateParams } from 'openai/resources';
 type ImageType = 'b64' | 'url' | 'fileName';
 
 /**
- * Default configuration for GPT image generation with transparent background
+ * Default MODELS configuration for GPT image
  */
-export const optionGptImage1: ImageGenerateParams = {
-  model: 'gpt-image-1',
-  // file: fs.createReadStream(originalImage.path),
-  prompt: '',
-  quality: 'auto',
-  n: 1,
-  size: '1024x1024',
-  background: 'transparent',
-  output_format: 'png',
+export const ModelConfigurations = {
+  GptImage1: {
+    model: 'gpt-image-1',
+    prompt: '',
+    quality: 'auto',
+    n: 1,
+    size: '1024x1024',
+    background: 'transparent',
+    output_format: 'png',
+  } as ImageGenerateParams,
+
+  Dalle3: {
+    model: 'dall-e-3',
+    prompt: '',
+    quality: 'standard',
+    n: 1,
+    size: '1024x1024',
+    response_format: 'url',
+  } as ImageGenerateParams,
+
+  Dalle2: {
+    model: 'dall-e-2',
+    prompt: '',
+    n: 1,
+    size: '512x512',
+    response_format: 'url',
+  } as ImageGenerateParams,
 };
-/**
- * Default configuration for DALL-E 3 image generation
- */
-export const optionDalle3: ImageGenerateParams = {
-  model: 'dall-e-3',
-  prompt: '',
-  quality: 'standard',
-  n: 1,
-  size: '1024x1024',
-  response_format: 'url',
-};
-/**
- * Default configuration for DALL-E 2 image generation
- */
-export const optionDalle2: ImageGenerateParams = {
-  model: 'dall-e-2',
-  prompt: '',
-  n: 1,
-  size: '512x512',
-  response_format: 'url',
-};
+
 /**
  * Downloads an image from a URL and saves it as a PNG file
  * @param {string} url - The URL of the image to download

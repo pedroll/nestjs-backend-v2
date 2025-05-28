@@ -4,12 +4,13 @@ dotenv.config(); // npm run start:dev --env-file .rnv
 
 export default () => ({
   environment: process.env.NODE_ENV ?? 'dev',
-  hostApi: process.env.HOST_API ?? 'http://localhost:3000',
+  hostApi: `${process.env.HOST_API}:${process.env.PORT}`,
   port: parseInt(process.env.PORT ?? '3000', 10),
+  globalPrefix: process.env.GLOBAL_PREFIX ?? 'api/v1',
+  apiBaseUrl: `${process.env.HOST_API}:${process.env.PORT}/${process.env.GLOBAL_PREFIX}`,
   jwtSecret: process.env.JWT_SECRET,
   jwtSalt: process.env.JWT_SALT,
   passwordPattern: process.env.PASSWORD_PATTERN,
-  globalPrefix: process.env.GLOBAL_PREFIX ?? 'api/v1',
   postgres: {
     ssl: process.env.STAGE === 'prod',
     extra: {

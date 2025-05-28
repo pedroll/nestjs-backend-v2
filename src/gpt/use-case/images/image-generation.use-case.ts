@@ -5,15 +5,19 @@ import {
   ImagesResponse,
 } from 'openai/resources/images';
 
-import { optionDalle3, optionGptImage1, saveImageToFs } from '../../helpers';
+import { ModelConfigurations, saveImageToFs } from '../../helpers';
 
 import * as fs from 'fs';
+import EnvConfig from '../../../config/app.config';
+import { ConfigService } from '@nestjs/config';
+
+const configService = new ConfigService({ app: EnvConfig() });
 
 /**
  * Options for image generation
- * @property {string} prompt - The text prompt for image generation
- * @property {string} [originalImage] - Optional base64 encoded original image for edits
- * @property {string} [maskImage] - Optional base64 encoded mask image for inpainting
+ * @property  prompt - The text prompt for image generation
+ * @property  [originalImage] - Optional base64 encoded original image for edits
+ * @property  [maskImage] - Optional base64 encoded mask image for inpainting
  */
 interface Options {
   prompt: string;
@@ -31,15 +35,16 @@ export const imageGenerationUseCase = async (
 
     // TODO: Implement model selection from request
     // TODO: Add support for image editing with originalImage and maskImage
-    let imageName;
+    let imageName = '';
     let response: ImagesResponse;
-    // Generate the image using OpenAI's API
     if (!originalImage || !maskImage) {
+      // Generate the image using OpenAI's API
       response = await openAi.images.generate({
-        ...optionDalle3, // Default configuration from helpers
+        ...ModelConfigurations.Dalle3, // Default configuration from helpers
         prompt,
       });
     } else {
+      // Edit the image using mask OpenAI's API
       const image: Image = originalImage.data![0];
       let imagePath = '';
       if (image.url) {
@@ -50,7 +55,7 @@ export const imageGenerationUseCase = async (
       const maskImagePath = await saveImageToFs(maskImage, 'b64', true);
 
       response = await openAi.images.edit({
-        ...(optionGptImage1 as ImageEditParams), // Default configuration from helpers
+        ...(ModelConfigurations.GptImage1 as ImageEditParams), // Default configuration from helpers
         image: fs.createReadStream(imagePath),
         mask: fs.createReadStream(maskImagePath),
         prompt,
@@ -68,9 +73,11 @@ export const imageGenerationUseCase = async (
     } else if (imageResponse.b64_json) {
       imageName = await saveImageToFs(imageResponse.b64_json, 'b64');
     }
+    // strip extension from filename
+    imageName = imageName.replace(/\.[^/.]+$/, '');
 
-    const url = `${process.env.BASE_URL}/gpt/image-generation/${imageName}`;
-
+    const url = `${configService.get('app.apiBaseUrl')}/gpt/image-generation/${imageName}`;
+    console.log('Generated image URL:', url);
     return {
       openaiUrl: imageResponse.url ?? undefined,
       url,

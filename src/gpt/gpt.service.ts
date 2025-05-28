@@ -82,9 +82,8 @@ export class GptService {
 
     if (!wasFound) {
       const fileType = type.charAt(0).toUpperCase() + type.slice(1);
-      throw new NotFoundException(
-        `${fileType} file "${filename}" not found at path: ${storagePath}`,
-      );
+      console.log(`File not found: ${storagePath}`);
+      throw new NotFoundException(`${fileType} file "${filename}" not found.`);
     }
 
     return storagePath;
