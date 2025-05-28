@@ -1,0 +1,81 @@
+version: "1.0"
+profile:
+  name: qodana.recommended
+ide: QDJS
+linter: jetbrains/qodana-js:2025.1
+include:
+  - name: AlphaUnsortedPropertiesFile
+  - name: AngularAmbiguousComponentTag
+  - name: AngularBindingTypeMismatch
+  - name: AngularCliAddDependency
+  - name: AngularDeferBlockOnTrigger
+  - name: AngularForBlockNonIterableVar
+  - name: AngularIllegalForLoopTrackAccess
+  - name: AngularMultipleStructuralDirectives
+  - name: AssignmentResultUsedJS
+  - name: ConditionalExpressionJS
+  - name: DebuggerStatementJS
+  - name: DuplicatedCode
+  - name: Eslint
+  - name: IncorrectFormatting
+  - name: InjectedReferences
+  - name: JSAccessibilityCheck
+  - name: JSAnnotator
+  - name: VulnerableLibrariesGlobal
+  - name: AngularNonEmptyNgContent
+  - name: AngularInaccessibleSymbol
+  - name: AngularInvalidAnimationTriggerAssignment
+  - name: AngularIncorrectTemplateDefinition
+  - name: AngularIncorrectLetUsage
+  - name: AngularInsecureBindingToEvent
+  - name: AngularIncorrectBlockUsage
+  - name: AngularInvalidEntryComponent
+  - name: AngularInvalidI18nAttribute
+  - name: AngularInvalidImportedOrDeclaredSymbol
+  - name: AngularNonStandaloneComponentImports
+  - name: AngularNgOptimizedImage
+  - name: AngularMissingEventHandler
+  - name: AngularMissingOrInvalidDeclarationInModule
+  - name: AngularInvalidSelector
+  - name: AngularRecursiveModuleImportExport
+  - name: AngularMissingRequiredDirectiveInputBinding
+  - name: AngularInvalidTemplateReferenceVariable
+  - name: AngularUndefinedBinding
+  - name: AngularUndefinedModuleExport
+  - name: AngularUndefinedTag
+  - name: AngularUnresolvedPipe
+  - name: AngularUnresolvedPipe
+  - name: AngularUnsupportedSyntax
+  - name: AngularUnusedComponentImport
+  - name: HttpUrlsUsage
+  - name: JsCoverageInspection
+  - name: EmptyDirectory
+  - name: InconsistentLineSeparators
+  - name: HttpRequestPlaceholder
+  - name: HttpRequestAmbiguityEncoding
+  - name: HttpRequestEnvironmentAuthConfigurationValidationInspection
+  - name: HttpClientDuplicateImportInspection
+  - name: HttpClientInappropriateProtocolUsageInspection
+  - name: IncorrectHttpHeaderInspection
+  - name: HttpRequestRequestSeparatorXmlBodyInspection
+  - name: HttpRequestRequestSeparatorYamlBodyInspection
+  - name: HttpRequestRequestSeparatorJsonBodyInspection
+  - name: HttpClientRunRequestNameInspection
+  - name: HttpRequestContentLengthIsIgnored
+  - name: HttpRequestCustomHttpMethodInspection
+  - name: HttpClientUnresolvedAuthId
+  - name: HttpClientUnresolvedVariable
+  - name: HttpRequestJsonBodyInspection
+  - name: HttpRequestWhitespaceInsideRequestTargetPath
+  - name: IgnoreCoverEntry
+  - name: IgnoreDuplicateEntry
+  - name: IgnoreIncorrectEntry
+  - name: IgnoreRelativeEntry
+  - name: IgnoreSyntaxEntry
+  - name: NodeCoreCodingAssistance
+  - name: OpenApiJsonUnusedRefInspection
+  - name: OpenApiYamlUnusedRefInspection
+exclude:
+  - name: Annotator
+
+

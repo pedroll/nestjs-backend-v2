@@ -1,5 +1,5 @@
 // @ts-check
-import eslint from '@eslint/js';
+// import eslint from '@eslint/js';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import globals from 'globals';
 import tseslint, { parser } from 'typescript-eslint';
@@ -11,7 +11,7 @@ export default tseslint.config(
   {
     ignores: ['eslint.config.mjs'],
   },
-  eslint.configs.recommended,
+  // eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
   tseslint.configs.stylisticTypeChecked,
   eslintPluginPrettierRecommended,

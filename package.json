@@ -38,6 +38,8 @@
     "@nestjs/swagger": "^11.1.2",
     "@nestjs/typeorm": "^11.0.0",
     "@nestjs/websockets": "^11.0.17",
+    "@yarnpkg/core": "^4.4.1",
+    "@yarnpkg/extensions": "2.0.5",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -54,7 +56,7 @@
     "typeorm": "^0.3.22"
   },
   "devDependencies": {
-    "@darraghor/eslint-plugin-nestjs-typed": "^6.4.4",
+    "@darraghor/eslint-plugin-nestjs-typed": "^6.5.1",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.24.0",
     "@nestjs/cli": "^11.0.6",
@@ -85,6 +87,7 @@
     "ts-loader": "^9.5.2",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
+    "typanion": "^3.14.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.29.1",
     "webpack": "^5.99.5"
