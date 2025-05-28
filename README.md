@@ -37,6 +37,7 @@ Caracteristicas no incluidas en el curso:
     * Text to audio, Speech
     * Translate
     * Audio to text, Transcribe subtitles
+  * Image generation, mask edit, variation
     * ...
 * [ ] Graphql
 * [ ] Typed responses
