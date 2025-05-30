@@ -43,8 +43,9 @@ export const imageVariationUseCase = async (
     const imageResponse = response.data![0];
 
     const imageName = await saveImageToFs(imageResponse.url!, 'url', false);
-
-    const url = `${configService.get('app.apiBaseUrl')}/gpt/image-generation/${imageName}`;
+    // strip extension from imageName
+    const imageNameWithoutExtension = imageName.split('.')[0];
+    const url = `${configService.get('app.apiBaseUrl')}/gpt/image-generation/${imageNameWithoutExtension}`;
     console.log('Variated image URL:', url);
     return {
       openaiUrl: imageResponse.url ?? undefined,

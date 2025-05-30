@@ -61,7 +61,7 @@ Content-Type: audio/m4a
 
 
 ### GET image-generation
-GET {{ apiUrl }}/gpt/image-generation/1747860710760
+GET {{ apiUrl }}/gpt/image-generation/1747907364478
 
 ### POST image-generation
 POST {{ apiUrl }}/gpt/image-generation
