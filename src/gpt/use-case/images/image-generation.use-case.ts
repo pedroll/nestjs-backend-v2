@@ -1,9 +1,5 @@
-import OpenAI from 'openai';
-import {
-  Image,
-  ImageEditParams,
-  ImagesResponse,
-} from 'openai/resources/images';
+import OpenAI, { toFile } from 'openai';
+import { ImageEditParams, ImagesResponse } from 'openai/resources/images';
 
 import { ModelConfigurations, saveImageToFs } from '../../helpers';
 
@@ -21,7 +17,7 @@ const configService = new ConfigService({ app: EnvConfig() });
  */
 interface Options {
   prompt: string;
-  originalImage?: ImagesResponse;
+  originalImage?: string;
   maskImage?: string;
 }
 
@@ -45,19 +41,25 @@ export const imageGenerationUseCase = async (
       });
     } else {
       // Edit the image using mask OpenAI's API
-      const image: Image = originalImage.data![0];
+      // const image: Image = originalImage.data![0];
       let imagePath = '';
-      if (image.url) {
-        imagePath = await saveImageToFs(image.url, 'url', true);
-      } else if (image.b64_json) {
-        imagePath = await saveImageToFs(image.b64_json, 'b64', true);
-      }
+      imagePath = await saveImageToFs(originalImage, 'url', true);
+      console.log('imagePath', imagePath);
+      // if (image.url) {
+      //   imagePath = await saveImageToFs(image.url, 'url', true);
+      // } else if (image.b64_json) {
+      //   imagePath = await saveImageToFs(image.b64_json, 'b64', true);
+      // }
       const maskImagePath = await saveImageToFs(maskImage, 'b64', true);
 
       response = await openAi.images.edit({
         ...(ModelConfigurations.GptImage1 as ImageEditParams), // Default configuration from helpers
-        image: fs.createReadStream(imagePath),
-        mask: fs.createReadStream(maskImagePath),
+        image: await toFile(fs.createReadStream(imagePath), null, {
+          type: 'image/png',
+        }),
+        mask: await toFile(fs.createReadStream(maskImagePath), null, {
+          type: 'image/png',
+        }),
         prompt,
       });
     }
