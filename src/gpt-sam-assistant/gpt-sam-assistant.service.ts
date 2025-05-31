@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
 import {
+  CheckRunCompleteStatusUseCase,
   CreateMessageUseCase,
   CreateRunUseCase,
   CreateThreadUseCase,
@@ -18,12 +19,17 @@ export class GptSamAssistantService {
     return await CreateThreadUseCase(this.openAi);
   }
 
-  async userQuestion(question: UserQuestionDto): Promise<Run> {
-    const message = await CreateMessageUseCase(this.openAi, question);
+  async userQuestion(questionDto: UserQuestionDto): Promise<Run> {
+    const message = await CreateMessageUseCase(this.openAi, questionDto);
+
     const run = await CreateRunUseCase(this.openAi, {
-      threadId: question.threadId,
+      threadId: questionDto.threadId,
       assistantId: message.assistant_id ?? 'some fixed id',
     });
-    return run;
+
+    await CheckRunCompleteStatusUseCase(this.openAi, {
+      threadId: questionDto.threadId,
+      runId: run.id,
+    });
   }
 }
