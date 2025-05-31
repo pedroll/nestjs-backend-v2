@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
-import { CreateThreadUseCase } from './use-cases';
+import { CreateMessageUseCase, CreateThreadUseCase } from './use-cases';
+import { UserQuestionDto } from './dto';
+import { Message } from 'openai/resources/beta/threads/messages';
 
 @Injectable()
 export class GptSamAssistantService {
@@ -12,7 +14,7 @@ export class GptSamAssistantService {
     return await CreateThreadUseCase(this.openAi);
   }
 
-  userQuestion(): string {
-    return 'userQuestion';
+  async userQuestion(question: UserQuestionDto): Promise<Message> {
+    return await CreateMessageUseCase(this.openAi, question);
   }
 }

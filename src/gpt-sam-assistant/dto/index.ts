@@ -1,1 +1,1 @@
-export * from './user-uestion.dto';
+export * from './user-question.dto';

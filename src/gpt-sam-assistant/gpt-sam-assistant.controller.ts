@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { GptSamAssistantService } from './gpt-sam-assistant.service';
-import { UserQuestionDto } from './dto/user-uestion.dto';
+import { UserQuestionDto } from './dto/user-question.dto';
 
 @Controller('gpt-sam-assistant')
 export class GptSamAssistantController {
