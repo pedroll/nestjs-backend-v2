@@ -16,6 +16,7 @@ import { FilesModule } from './files/files.module';
 import { AuthModule } from './auth/auth.module';
 import { MessagesWsModule } from './messages-ws/messages-ws.module';
 import { GptModule } from './gpt/gpt.module';
+import { GptSamAssistantModule } from './gpt-sam-assistant/gpt-sam-assistant.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { GptModule } from './gpt/gpt.module';
     AuthModule,
     MessagesWsModule,
     GptModule,
+    GptSamAssistantModule,
   ],
   controllers: [],
   providers: [AppService],

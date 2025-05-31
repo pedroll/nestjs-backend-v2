@@ -98,3 +98,19 @@ Content-Type: application/json
 {
 "baseImage": "{{ apiUrl }}/gpt/image-generation/1748343118376"
 }
+
+### POST Creat Thread
+POST {{ apiUrl }}/gpt-sam-assistant/create-thread
+Content-Type: application/json
+
+{
+  "question": "Hola, como estas?"
+}
+
+### POST User Question
+POST {{ apiUrl }}/gpt-sam-assistant/user-question
+Content-Type: application/json
+
+{
+  "threadId": "ABC",
+  "Question": "Hola, como estas?",
