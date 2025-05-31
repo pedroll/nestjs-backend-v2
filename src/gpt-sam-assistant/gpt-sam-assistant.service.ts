@@ -5,9 +5,9 @@ import {
   CreateMessageUseCase,
   CreateRunUseCase,
   CreateThreadUseCase,
+  GetMessageListUseCase,
 } from './use-cases';
 import { UserQuestionDto } from './dto';
-import { Run } from 'openai/resources/beta/threads/runs/runs';
 
 @Injectable()
 export class GptSamAssistantService {
@@ -19,7 +19,7 @@ export class GptSamAssistantService {
     return await CreateThreadUseCase(this.openAi);
   }
 
-  async userQuestion(questionDto: UserQuestionDto): Promise<Run> {
+  async userQuestion(questionDto: UserQuestionDto) {
     const message = await CreateMessageUseCase(this.openAi, questionDto);
 
     const run = await CreateRunUseCase(this.openAi, {
@@ -31,5 +31,11 @@ export class GptSamAssistantService {
       threadId: questionDto.threadId,
       runId: run.id,
     });
+
+    const messages = await GetMessageListUseCase(this.openAi, {
+      threadId: questionDto.threadId,
+    });
+
+    return messages;
   }
 }

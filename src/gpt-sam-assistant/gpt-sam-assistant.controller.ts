@@ -15,6 +15,6 @@ export class GptSamAssistantController {
 
   @Post('user-question')
   userQuestion(@Body() userQuestionDto: UserQuestionDto) {
-    this.gptSamAssistantService.userQuestion();
+    this.gptSamAssistantService.userQuestion(userQuestionDto);
   }
 }
