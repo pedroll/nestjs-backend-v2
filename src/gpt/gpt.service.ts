@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import OpenAI from 'openai';
-import * as process from 'node:process';
 import * as path from 'node:path';
 import * as fs from 'fs';
 import {
