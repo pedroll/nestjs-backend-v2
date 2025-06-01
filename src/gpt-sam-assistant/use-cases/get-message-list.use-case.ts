@@ -4,6 +4,12 @@ interface GetListOptions {
   threadId: string;
 }
 
+/**
+ * Get the list of messages in the OpenAI thread.
+ * @param openai - The OpenAI instance.
+ * @param getListOptions - The options containing threadId.
+ * @returns The list of messages.
+ */
 export const GetMessageListUseCase = async (
   openai: OpenAI,
   getListOptions: GetListOptions,

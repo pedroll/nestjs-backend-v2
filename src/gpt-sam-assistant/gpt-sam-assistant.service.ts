@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import OpenAI from 'openai';
 import {
   CheckRunCompleteStatusUseCase,
@@ -9,16 +10,30 @@ import {
 } from './use-cases';
 import { UserQuestionDto } from './dto';
 
+/**
+ * GptSamAssistantService provides business logic for the GPT-SAM assistant.
+ */
 @Injectable()
 export class GptSamAssistantService {
   private openAi = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
+    apiKey: this.configService.get('openAiApiKey'),
   });
 
-  async createThread() {
+  constructor(private readonly configService: ConfigService) {}
+
+  /**
+   * Create a new thread.
+   * @returns The created thread ID.
+   */
+  async createThread(): Promise<{ id: string }> {
     return await CreateThreadUseCase(this.openAi);
   }
 
+  /**
+   * Handle a user question.
+   * @param questionDto - The user question data.
+   * @returns The list of messages.
+   */
   async userQuestion(questionDto: UserQuestionDto) {
     const message = await CreateMessageUseCase(this.openAi, questionDto);
 

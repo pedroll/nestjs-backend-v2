@@ -10,6 +10,12 @@ interface CreateRunOptions {
   metadata?: Record<string, unknown> | null;
 }
 
+/**
+ * Create a run in the OpenAI thread.
+ * @param openai - The OpenAI instance.
+ * @param options - The options containing threadId and assistantId.
+ * @returns The created run.
+ */
 export const CreateRunUseCase = async (
   openai: OpenAI,
   options: CreateRunOptions,

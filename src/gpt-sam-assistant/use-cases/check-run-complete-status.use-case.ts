@@ -6,6 +6,12 @@ interface CheckRunStatusOptions {
   threadId: string;
 }
 
+/**
+ * Check the status of a run in the OpenAI thread.
+ * @param openai - The OpenAI instance.
+ * @param options - The options containing threadId and runId.
+ * @returns The run status.
+ */
 export const CheckRunCompleteStatusUseCase = async (
   openai: OpenAI,
   options: CheckRunStatusOptions,
