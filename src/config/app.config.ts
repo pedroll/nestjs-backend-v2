@@ -29,4 +29,6 @@ export default () => ({
     port: parseInt(process.env.MONGO_PORT ?? '27017', 10),
     dbName: process.env.MONGO_DB ?? 'TesloDb',
   },
+  openAiApiKey: process.env.OPEN_AI_API_KEY,
+  openAiAssistantId: process.env.OPEN_AI_ASSISTANT_ID,
 });
