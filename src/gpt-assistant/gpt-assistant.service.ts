@@ -39,7 +39,9 @@ export class GptAssistantService {
 
     const run = await CreateRunUseCase(this.openAi, {
       threadId: questionDto.threadId,
-      assistantId: message.assistant_id ?? 'some fixed id',
+      assistantId:
+        message.assistant_id ??
+        this.configService.get<string>('openAiDefaultAssistantId')!,
     });
 
     await CheckRunCompleteStatusUseCase(this.openAi, {

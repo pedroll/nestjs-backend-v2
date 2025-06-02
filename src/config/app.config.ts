@@ -28,7 +28,7 @@ dotenv.config(); // Load environment variables from .env file
  * @property {number} mongoDb.port - The port number for the MongoDB database.
  * @property {string} mongoDb.dbName - The name of the MongoDB database.
  * @property {string} openAiApiKey - The API key for the OpenAI service.
- * @property {string} openAiAssistantId - The assistant ID for the OpenAI service.
+ * @property {string} openAiDefaultAssistantId - The assistant ID for the OpenAI service.
  */
 export default (): object => ({
   /**
@@ -175,5 +175,5 @@ export default (): object => ({
    * The assistant ID for the OpenAI service.
    * @type {string}
    */
-  openAiAssistantId: process.env.OPEN_AI_ASSISTANT_ID, // Ensure OPEN_AI_ASSISTANT_ID is defined in your .env file
+  openAiDefaultAssistantId: process.env.OPEN_AI_DEAFAULT_ASSISTANT_ID, // Ensure OPEN_AI_ASSISTANT_ID is defined in your .env file
 });

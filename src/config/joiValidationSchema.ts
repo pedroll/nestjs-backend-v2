@@ -17,5 +17,5 @@ export const joiValidationSchema = Joi.object({
   DB_NAME: Joi.string().required(),
   // openai
   OPENAI_API_KEY: Joi.string().required(),
-  OPEN_AI_ASSISTANT_ID: Joi.string().required(),
+  OPEN_AI_DEAFAULT_ASSISTANT_ID: Joi.string().required(),
 });
