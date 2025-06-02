@@ -100,7 +100,7 @@ Content-Type: application/json
 }
 
 ### POST Creat Thread
-POST {{ apiUrl }}/gpt-sam-assistant/create-thread
+POST {{ apiUrl }}/gpt-assistant/create-thread
 Content-Type: application/json
 
 {
@@ -108,9 +108,10 @@ Content-Type: application/json
 }
 
 ### POST User Question
-POST {{ apiUrl }}/gpt-sam-assistant/user-question
+POST {{ apiUrl }}/gpt-assistant/user-question
 Content-Type: application/json
 
 {
   "threadId": "ABC",
-  "Question": "Hola, como estas?",
+  "Question": "Hola, como estas?"
+}

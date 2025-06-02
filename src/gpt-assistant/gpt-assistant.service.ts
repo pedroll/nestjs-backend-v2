@@ -11,10 +11,10 @@ import {
 import { UserQuestionDto } from './dto';
 
 /**
- * GptSamAssistantService provides business logic for the GPT-SAM assistant.
+ * GptAssistantService provides business logic for the GPT-SAM assistant.
  */
 @Injectable()
-export class GptSamAssistantService {
+export class GptAssistantService {
   private openAi = new OpenAI({
     apiKey: this.configService.get('openAiApiKey'),
   });
