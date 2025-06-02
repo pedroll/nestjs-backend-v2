@@ -9,7 +9,8 @@ Skeleton NestJs Backend
 ===============
 ## Description
 
-Mockup bakend NestJs based on udemy course
+Playground bakend NestJs
+No real world app
 Postgres version to be expanded with other features
 
 * [x] Restful
@@ -25,10 +26,10 @@ Postgres version to be expanded with other features
 * [x] Swagger documentation http://localhost:3000/api
 * [x] Websockets
 
-Caracteristicas no incluidas en el curso:
+Extending features:
 
 * [x] Eslint Rules NestJs Jest
-* [x] Unit tests COV 80% - using various styles for document
+* [ ] Unit tests COV 80% - using various styles for document
 * [ ] e2e tests COV 72%
 * [x] OpenAi WIP (consume/serve openai endpoints)
     * Orthography check
@@ -36,14 +37,13 @@ Caracteristicas no incluidas en el curso:
     * Pros / Consns Stream Response
     * Text to audio, Speech
     * Translate
-    * Audio to text, Transcribe subtitles
+  * Audio to text, Transcribe subtitles.
   * Image generation, mask edit, variation
-    * ...
+  * Assistant for e-store terms, based in legal text
 * [ ] Graphql
 * [ ] Typed responses
 * [ ] Shared library with responses para monorepo
-* [ ] Monorepo con Frontend
-* [ ] Http adapter, para cómodo reemplazo de requests o actualizaciones de librerias http
+* [ ] Monorepo with Frontend
 * [ ] dockerized
 ## 1- Project setup
 ```bash
