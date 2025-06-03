@@ -15,14 +15,14 @@ const configService = new ConfigService({ app: EnvConfig() });
  * @property  [originalImage] - Optional base64 encoded original image for edits
  * @property  [maskImage] - Optional base64 encoded mask image for inpainting
  */
-interface Options {
+interface ImageVariationOptions {
   baseImage: string;
 }
 
 // todo: receive chosen model from request
 export const imageVariationUseCase = async (
   openAi: OpenAI,
-  options: Options,
+  options: ImageVariationOptions,
 ) => {
   try {
     const { baseImage } = options;
@@ -46,7 +46,7 @@ export const imageVariationUseCase = async (
     // strip extension from imageName
     const imageNameWithoutExtension = imageName.split('.')[0];
     const url = `${configService.get('app.apiBaseUrl')}/gpt/image-generation/${imageNameWithoutExtension}`;
-    console.log('Variated image URL:', url);
+
     return {
       openaiUrl: imageResponse.url ?? undefined,
       url,

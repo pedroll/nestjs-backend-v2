@@ -1,9 +1,10 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class ImageGenerationDto {
   @ApiProperty({ description: 'The text prompt for image generation' })
   @IsString()
+  @IsNotEmpty()
   prompt: string;
 
   @ApiPropertyOptional({

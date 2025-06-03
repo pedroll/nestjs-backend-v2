@@ -1,12 +1,12 @@
 import OpenAI from 'openai';
 
-interface Options {
+interface ProsConsOptions {
   prompt: string;
 }
 
-export const prosConsDicusserUseCase = async (
+export const prosConsDiscusserUseCase = async (
   openAi: OpenAI,
-  { prompt }: Options,
+  { prompt }: ProsConsOptions,
 ) => {
   const response = await openAi.chat.completions.create({
     model: 'gpt-4.1-nano',
@@ -31,7 +31,7 @@ export const prosConsDicusserUseCase = async (
     //   type: 'json_object'
     // },
   });
-  console.log(response);
+
   return response.choices[0].message;
 
   // const jsonResponse = JSON.parse(response.output_text) as JSON;

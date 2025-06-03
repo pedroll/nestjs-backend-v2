@@ -3,7 +3,7 @@ import { TextToAudioDto } from '../../dto';
 import * as path from 'node:path';
 import * as fs from 'node:fs';
 
-interface Options {
+interface TextToAudioOptions {
   prompt: string;
   maxTokens?: number;
 }
@@ -26,7 +26,7 @@ export const textToAudioUseCase = async (
     sage: 'sage',
     verse: 'verse',
   };
-  const selectedVoice: string = voices[voice ?? 'nova'] as string;
+  const selectedVoice: string = voices[voice ?? 'nova'] || 'nova';
 
   const storagePath = path.resolve(
     __dirname,

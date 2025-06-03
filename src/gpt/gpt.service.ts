@@ -16,8 +16,8 @@ import {
   imageGenerationUseCase,
   imageVariationUseCase,
   orthographyUseCase,
-  prosConsDicusserStreamUseCase,
-  prosConsDicusserUseCase,
+  prosConsDiscusserStreamUseCase,
+  prosConsDiscusserUseCase,
   textToAudioUseCase,
   translateUseCase,
 } from './use-case';
@@ -33,11 +33,11 @@ export class GptService {
   }
 
   async prosConsDiscusser({ prompt }: ProsConsDiscusserDto) {
-    return await prosConsDicusserUseCase(this.openAi, { prompt });
+    return await prosConsDiscusserUseCase(this.openAi, { prompt });
   }
 
   async prosConsDiscusserStream({ prompt }: ProsConsDiscusserDto) {
-    return await prosConsDicusserStreamUseCase(this.openAi, { prompt });
+    return await prosConsDiscusserStreamUseCase(this.openAi, { prompt });
   }
 
   async translate(translateDto: TranslateDto) {

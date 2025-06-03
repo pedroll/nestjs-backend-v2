@@ -1,11 +1,14 @@
 import OpenAI from 'openai';
 
-interface Options {
+export interface OrthographyOptions {
   prompt: string;
   maxTokens?: number;
 }
 
-export const orthographyUseCase = async (openAi: OpenAI, options: Options) => {
+export const orthographyUseCase = async (
+  openAi: OpenAI,
+  options: OrthographyOptions,
+) => {
   const { prompt, maxTokens } = options;
 
   const response = await openAi.responses.create({

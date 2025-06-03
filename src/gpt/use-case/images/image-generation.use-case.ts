@@ -15,7 +15,7 @@ const configService = new ConfigService({ app: EnvConfig() });
  * @property  [originalImage] - Optional base64 encoded original image for edits
  * @property  [maskImage] - Optional base64 encoded mask image for inpainting
  */
-interface Options {
+interface ImageGenerationOptions {
   prompt: string;
   originalImage?: string;
   maskImage?: string;
@@ -24,7 +24,7 @@ interface Options {
 // todo: receive chosen model from request
 export const imageGenerationUseCase = async (
   openAi: OpenAI,
-  options: Options,
+  options: ImageGenerationOptions,
 ) => {
   try {
     const { prompt, originalImage, maskImage } = options;
@@ -44,7 +44,7 @@ export const imageGenerationUseCase = async (
       // const image: Image = originalImage.data![0];
       let imagePath = '';
       imagePath = await saveImageToFs(originalImage, 'url', true);
-      console.log('imagePath', imagePath);
+
       // if (image.url) {
       //   imagePath = await saveImageToFs(image.url, 'url', true);
       // } else if (image.b64_json) {
@@ -79,7 +79,6 @@ export const imageGenerationUseCase = async (
     imageName = imageName.replace(/\.[^/.]+$/, '');
 
     const url = `${configService.get('app.apiBaseUrl')}/gpt/image-generation/${imageName}`;
-    console.log('Generated image URL:', url);
     return {
       openaiUrl: imageResponse.url ?? undefined,
       url,

@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 import { TranslateDto } from '../../dto';
 
-interface Options {
+interface TranslateOptions {
   prompt: string;
   maxTokens?: number;
 }

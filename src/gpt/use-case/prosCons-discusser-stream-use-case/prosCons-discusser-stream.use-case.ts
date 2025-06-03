@@ -1,12 +1,12 @@
 import OpenAI from 'openai';
 
-interface Options {
+interface PosConsStreamOptions {
   prompt: string;
 }
 
-export const prosConsDicusserStreamUseCase = async (
+export const prosConsDiscusserStreamUseCase = async (
   openAi: OpenAI,
-  { prompt }: Options,
+  { prompt }: PosConsStreamOptions,
 ) => {
   return await openAi.chat.completions.create({
     stream: true,
