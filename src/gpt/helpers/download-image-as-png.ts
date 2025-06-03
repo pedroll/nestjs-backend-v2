@@ -39,63 +39,6 @@ export const ModelConfigurations = {
 };
 
 /**
- * Downloads an image from a URL and saves it as a PNG file
- * @param {string} url - The URL of the image to download
- * @param {boolean} [fullPath=false] - Whether to return the full file path or just the filename
- * @returns {Promise<string>} The filename or full path of the saved image
- * @throws {InternalServerErrorException} If the image download fails
- */
-export const downloadImageAsPng = async (
-  url: string,
-  fullPath = false,
-): Promise<string> => {
-  const response = await fetch(url);
-
-  if (!response.ok) {
-    throw new InternalServerErrorException('Download image was not possible');
-  }
-
-  const folderPath = path.resolve('./', './generated/images/');
-  fs.mkdirSync(folderPath, { recursive: true });
-
-  const imageNamePng = `${new Date().getTime()}.png`;
-  const buffer = Buffer.from(await response.arrayBuffer());
-
-  // fs.writeFileSync( `${ folderPath }/${ imageNamePng }`, buffer );
-  const completePath = path.join(folderPath, imageNamePng);
-
-  await sharp(buffer).png().ensureAlpha().toFile(completePath);
-
-  return fullPath ? completePath : imageNamePng;
-};
-
-/**
- * Converts a base64 encoded image to PNG and saves it to the filesystem
- * @param {string} base64Image - The base64 encoded image string
- * @param {boolean} [fullPath=false] - Whether to return the full file path or just the filename
- * @returns {Promise<string>} The filename or full path of the saved image
- */
-export const downloadBase64ImageAsPng = async (
-  base64Image: string,
-  fullPath = false,
-): Promise<string> => {
-  // Remover encabezado
-  base64Image = base64Image.split(';base64,').pop()!;
-  const imageBuffer = Buffer.from(base64Image, 'base64');
-
-  const folderPath = path.resolve('./', './generated/image/');
-  fs.mkdirSync(folderPath, { recursive: true });
-
-  const imageNamePng = `${new Date().getTime()}-64.png`;
-
-  const completePath = path.join(folderPath, imageNamePng);
-  // Transformar a RGBA, png // Así lo espera OpenAI
-  await sharp(imageBuffer).png().ensureAlpha().toFile(completePath);
-
-  return fullPath ? completePath : imageNamePng;
-};
-
-/**
  * Saves an image from OpenAI's API Image to the filesystem
  * @param {ImagesResponse} Image - The Image from OpenAI's image generation API
  * @param fullPath

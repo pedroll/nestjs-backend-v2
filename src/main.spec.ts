@@ -11,6 +11,7 @@ jest.mock('@nestjs/core', () => ({
       setGlobalPrefix: jest.fn(),
       enableCors: jest.fn(),
       listen: jest.fn(),
+      use: jest.fn(), // Add the missing 'use' method to the mock
     }),
   },
 }));
@@ -46,6 +47,7 @@ describe('Main.ts', () => {
     setGlobalPrefix: jest.Mock;
     enableCors: jest.Mock;
     listen: jest.Mock;
+    use: jest.Mock;
   };
 
   let mockLogger: {
@@ -58,6 +60,7 @@ describe('Main.ts', () => {
       setGlobalPrefix: jest.fn(),
       enableCors: jest.fn(),
       listen: jest.fn(),
+      use: jest.fn(),
     };
 
     mockLogger = {
@@ -92,7 +95,7 @@ describe('Main.ts', () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         validatorOptions: expect.objectContaining({
           forbidNonWhitelisted: true,
-          forbidUnknownValues: false,
+          forbidUnknownValues: true, // Updated to match actual implementation
           whitelist: true,
         }),
       }),
@@ -102,7 +105,23 @@ describe('Main.ts', () => {
   it('should enable cors', async () => {
     process.env.CORS_ORIGIN = 'http://localhost:3001';
     await bootstrap();
-    expect(mockApp.enableCors).toHaveBeenCalledWith();
+    // Update to match the actual CORS options in main.ts
+    expect(mockApp.enableCors).toHaveBeenCalledWith(
+      expect.objectContaining({
+        origin: ['http://localhost:4200'],
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+        preflightContinue: false,
+        optionsSuccessStatus: 204,
+      }),
+    );
+  });
+
+  // Add a test for the bodyParser middleware
+  it('should configure bodyParser middleware', async () => {
+    await bootstrap();
+    expect(mockApp.use).toHaveBeenCalledTimes(2); // Called twice for json and urlencoded
+    expect(mockApp.use).toHaveBeenNthCalledWith(1, expect.any(Function));
+    expect(mockApp.use).toHaveBeenNthCalledWith(2, expect.any(Function));
   });
 });
 

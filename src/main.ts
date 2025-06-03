@@ -16,6 +16,7 @@ const corsOptions: CorsOptions = {
 export async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const logger = new Logger('Bootstrap');
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // elimina los atributos que no esten en el dto
@@ -27,6 +28,7 @@ export async function bootstrap() {
       // },
     }),
   );
+
   app.setGlobalPrefix(process.env.GLOBAL_PREFIX ?? 'api/v1');
 
   const config = new DocumentBuilder()

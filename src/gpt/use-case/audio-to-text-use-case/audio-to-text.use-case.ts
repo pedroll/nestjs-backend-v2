@@ -1,12 +1,15 @@
 import OpenAI from 'openai';
 import * as fs from 'node:fs';
 
-interface Options {
+export interface AudioToTextOptions {
   prompt?: string;
   audio: Express.Multer.File;
 }
 
-export const audioToTextUseCase = async (openAi: OpenAI, options: Options) => {
+export const audioToTextUseCase = async (
+  openAi: OpenAI,
+  options: AudioToTextOptions,
+) => {
   const { prompt, audio } = options;
 
   const response = await openAi.audio.transcriptions.create({
@@ -16,7 +19,6 @@ export const audioToTextUseCase = async (openAi: OpenAI, options: Options) => {
     language: 'es',
     response_format: 'verbose_json',
   });
-  console.log(response);
 
   return response;
 };
